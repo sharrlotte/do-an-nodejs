@@ -8,4 +8,5 @@
 - [x] **Tạo Use as mask (1 điểm)**
 - [x] **Component (2 điểm)**: Tạo Create component, Detach Instance.
 - [ ] **Sáng tạo**
+
 Điểm: 9
