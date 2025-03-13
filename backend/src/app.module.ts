@@ -1,0 +1,42 @@
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from 'src/services/auth/auth.module';
+import { PrismaModule } from 'src/services/prisma/prisma.module';
+import { RoleModule } from 'src/services/role/role.module';
+import { UsersModule } from 'src/services/users/users.module';
+import { CloudinaryService } from './services/cloudinary/cloudinary.service';
+import { CloudinaryModule } from './services/cloudinary/cloudinary.module';
+import appConfig from 'src/config/configuration';
+import { MulterModule } from '@nestjs/platform-express';
+import { AuthMiddleware } from 'src/services/auth/auth.middleware';
+import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
+import { AuthoritiesModule } from './services/authorities/authorities.module';
+import { RoleAuthoritiesModule } from './services/role-authorities/role-authorities.module';
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: ['.env', '.development.env'],
+      cache: true,
+      load: [appConfig],
+    }),
+    NestjsFormDataModule.config({ isGlobal: true, storage: MemoryStoredFile }),
+    AuthModule,
+    UsersModule,
+    PrismaModule,
+    RoleModule,
+    CloudinaryModule,
+    MulterModule.register({
+      dest: './upload',
+    }),
+    AuthoritiesModule,
+    RoleAuthoritiesModule,
+  ],
+  providers: [CloudinaryService],
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}
