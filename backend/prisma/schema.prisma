@@ -21,6 +21,14 @@ model Account {
     @@index([userId])
 }
 
+model Book {
+    id          Int    @id @default(autoincrement())
+    title       String
+    description String
+    imageUrl    String
+    src         String @unique
+}
+
 model Authority {
     id              Int             @id @default(autoincrement())
     name            String          @unique
@@ -46,15 +54,15 @@ model Role {
 }
 
 model User {
-    id                  Int                   @id @default(autoincrement())
-    username            String
-    about               String
-    updatedAt           DateTime?             @db.Timestamp(6)
-    createdAt           DateTime              @db.Timestamp(6)
-    avatar              String?
-    accounts            Account[]
-    authorities         UserAuthority[]
-    roles               UserRole[]
+    id          Int             @id @default(autoincrement())
+    username    String
+    about       String
+    updatedAt   DateTime?       @db.Timestamp(6)
+    createdAt   DateTime        @db.Timestamp(6)
+    avatar      String?
+    accounts    Account[]
+    authorities UserAuthority[]
+    roles       UserRole[]
 }
 
 model UserAuthority {

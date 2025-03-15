@@ -9,6 +9,7 @@ export interface AppConfig {
   'cloudinary.secret': string;
   'cloudinary.key': string;
   'cloudinary.cloudName': string;
+  'gemini.apiKey': string;
 }
 
 (BigInt.prototype as any).toJSON = function () {
@@ -35,5 +36,8 @@ export default () => ({
     secret: process.env.CLOUDINARY_SECRET as string,
     key: process.env.CLOUDINARY_KEY as string,
     cloudName: process.env.CLOUDINARY_CLOUD_NAME as string,
+  },
+  gemini: {
+    apiKey: process.env.GEMINI_API_KEY as string,
   },
 });
