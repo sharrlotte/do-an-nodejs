@@ -22,7 +22,7 @@ export function Navbar() {
 
       <MenubarMenu>
         <MenubarTrigger className="hover:bg-gray-200 transition-colors px-4 py-2 rounded-md font-semibold flex items-center">
-          <Star size={20} className="pr-2" /> Xếp Hạng
+          <Star size={20} className="pr-2" /> Xếp Loại
         </MenubarTrigger>
         <MenubarContent className="items-center flex flex-row flex-wrap p-2">
           {ranking.map((rank, index) => (
@@ -47,7 +47,7 @@ export function Navbar() {
 
       <MenubarMenu>
         <MenubarTrigger className="hover:bg-gray-200 transition-colors px-4 py-2 rounded-md font-semibold flex items-center">
-          <Users size={20} className="pr-2" /> <a href="/fanpage">Fanpage</a>
+          <Users size={20} className="pr-2" /> <a href="https://www.facebook.com/CuuTruyenTranh">Fanpage</a>
         </MenubarTrigger>
       </MenubarMenu>
     </Menubar>
