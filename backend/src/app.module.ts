@@ -12,6 +12,9 @@ import { AuthMiddleware } from 'src/services/auth/auth.middleware';
 import { MemoryStoredFile, NestjsFormDataModule } from 'nestjs-form-data';
 import { AuthoritiesModule } from './services/authorities/authorities.module';
 import { RoleAuthoritiesModule } from './services/role-authorities/role-authorities.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskModule } from 'src/services/tasks/task.module';
+import { GeminiModule } from 'src/services/gemini/gemini.module';
 
 @Module({
   imports: [
@@ -21,17 +24,20 @@ import { RoleAuthoritiesModule } from './services/role-authorities/role-authorit
       cache: true,
       load: [appConfig],
     }),
+    MulterModule.register({
+      dest: './upload',
+    }),
+    ScheduleModule.forRoot(),
     NestjsFormDataModule.config({ isGlobal: true, storage: MemoryStoredFile }),
     AuthModule,
     UsersModule,
     PrismaModule,
     RoleModule,
     CloudinaryModule,
-    MulterModule.register({
-      dest: './upload',
-    }),
     AuthoritiesModule,
     RoleAuthoritiesModule,
+    TaskModule,
+    GeminiModule,
   ],
   providers: [CloudinaryService],
 })
