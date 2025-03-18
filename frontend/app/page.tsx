@@ -1,7 +1,7 @@
 import Header from './Header';
 import Footer from './Footer';
 import Novel from './novel';
-import NovelPopular from './novel-popular';
+import NovelPopular from './novelPopular';
 export default function Home() {
   return (
     <main className="overflow-y-auto overflow-x-hidden h-full bg-gray-200">
