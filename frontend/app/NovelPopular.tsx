@@ -74,7 +74,9 @@ function NovelPopular() {
                   <NextImage src={novel.imgurlNovel || '/placeholder.svg'} alt={novel.nameNovel} fill className="object-cover rounded-lg" />
                 </div>
                 <div className="flex-1">
-                  <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{novel.nameNovel}</h1>
+                  <a href="/novel-detail" className="text-3xl md:text-4xl font-bold text-white mb-4">
+                    {novel.nameNovel}
+                  </a>
                   <div className="flex gap-4 mb-6">
                     {novel.catagoryNovel.split(', ').map((category, idx) => (
                       <span key={idx} className="uppercase text-xs font-semibold tracking-wider text-gray-300">
