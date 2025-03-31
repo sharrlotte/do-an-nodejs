@@ -101,6 +101,7 @@ export class TasksService implements OnModuleInit {
           books.push(data);
 
           console.log('Added: ' + data);
+          
         } catch (e) {
           console.error(e);
         }
