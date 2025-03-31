@@ -2,11 +2,11 @@ import { getSession } from '@/api/auth-server.api';
 import ProtectedElement from '@/components/layout/protected-element';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { HistoryIcon, HomeIcon, PackageCheckIcon, UserCircle } from 'lucide-react';
+import { HistoryIcon, HomeIcon, Sparkles, UserCircle, ZoomIn } from 'lucide-react';
 import React, { ReactNode } from 'react';
 import Link from 'next/link';
 
-import { ArrowLeftEndOnRectangleIcon, BookOpenIcon, Cog6ToothIcon, HeartIcon, ShoppingCartIcon, UserIcon } from '@heroicons/react/24/outline';
+import { ArrowLeftEndOnRectangleIcon, BookOpenIcon, Cog6ToothIcon, HeartIcon, UserIcon } from '@heroicons/react/24/outline';
 import env from '@/constant/env';
 import { Filter } from '@/lib/utils';
 
@@ -37,18 +37,18 @@ const tabs: Tab = [
       ),
     },
     {
-      icon: <ShoppingCartIcon className="w-5 h-5" />,
+      icon: <Sparkles className="w-5 h-5" />,
       action: (
         <Link className="w-full" href="/my-order">
-          Đơn của bạn
+          Gacha Truyện
         </Link>
       ),
     },
     {
-      icon: <PackageCheckIcon className="w-5 h-5" />,
+      icon: <ZoomIn className="w-5 h-5" />,
       action: (
         <Link className="w-full" href="/customer-order">
-          Đơn của khách hàng
+          Tìm kiếm nâng cao
         </Link>
       ),
     },
@@ -58,7 +58,7 @@ const tabs: Tab = [
       icon: <BookOpenIcon className="w-5 h-5" />,
       action: (
         <Link className="w-full" href="/my-post">
-          Bài đăng của bạn
+          Truyện đã đăng
         </Link>
       ),
     },
@@ -66,7 +66,7 @@ const tabs: Tab = [
       icon: <HeartIcon className="w-5 h-5" />,
       action: (
         <Link className="w-full" href="/favorite-post">
-          Bài đăng yêu thích
+          Theo dõi
         </Link>
       ),
     },
@@ -74,7 +74,7 @@ const tabs: Tab = [
       icon: <HistoryIcon className="w-5 h-5" />,
       action: (
         <Link className="w-full" href="/post-browsing-history">
-          Lịch sử truy cập
+          Lịch sử
         </Link>
       ),
     },
@@ -102,7 +102,7 @@ const tabs: Tab = [
           Đăng xuất
         </Link>
       ),
-    },  
+    },
   ],
 ];
 

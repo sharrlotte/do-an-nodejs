@@ -25,7 +25,7 @@ export class TasksService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    await this.crawlQimao();
+    // await this.crawlQimao();
   }
 
   private async crawlQimao() {
