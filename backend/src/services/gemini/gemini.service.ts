@@ -1,18 +1,51 @@
 import { AppConfig } from 'src/config/configuration';
 import { Injectable } from '@nestjs/common';
-import { GenerativeModel, GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { ConfigService } from '@nestjs/config';
+
+const translationPrompt = 'Translated the content below to Vietnamese: \n\n';
 
 @Injectable()
 export class GeminiService {
-  private readonly model: GenerativeModel;
+  private readonly genAi: GoogleGenerativeAI;
 
   constructor(private readonly configService: ConfigService<AppConfig>) {
-    const genAI = new GoogleGenerativeAI(this.configService.getOrThrow('gemini.apiKey'));
-    this.model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash', generationConfig: { responseMimeType: 'application/json' } });
+    this.genAi = new GoogleGenerativeAI(this.configService.getOrThrow('gemini.apiKey'));
   }
 
-  async prompt(prompt: string) {
-    return await this.model.generateContent(prompt).then((res) => res.response.text());
+  async translateBook(title: string, description: string): Promise<{ title: string; description: string }> {
+    const model = this.genAi.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: 'You are an expert manga translator', //
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseSchema: { type: SchemaType.OBJECT, required: ['title', 'description'], properties: { title: { type: SchemaType.STRING }, description: { type: SchemaType.STRING } } },
+      },
+    });
+    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, description })}`).then((res) => JSON.parse(res.response.text()));
+  }
+
+  async translateChapter(title: string, content: string[]): Promise<{ title: string; content: string[] }> {
+    const model = this.genAi.getGenerativeModel({
+      model: 'gemini-1.5-flash',
+      systemInstruction: 'You are an expert manga translator', //
+      generationConfig: {
+        responseMimeType: 'application/json',
+        responseSchema: {
+          type: SchemaType.OBJECT,
+          required: ['title', 'content'],
+          properties: {
+            title: { type: SchemaType.STRING },
+            content: {
+              type: SchemaType.ARRAY,
+              items: {
+                type: SchemaType.STRING,
+              },
+            },
+          },
+        },
+      },
+    });
+    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, content })}`).then((res) => JSON.parse(res.response.text()));
   }
 }

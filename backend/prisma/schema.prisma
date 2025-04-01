@@ -22,11 +22,26 @@ model Account {
 }
 
 model Book {
-    id          Int    @id @default(autoincrement())
+    id          Int       @id @default(autoincrement())
     title       String
     description String
     imageUrl    String
-    src         String @unique
+    src         String    @unique
+    srcUpdated  DateTime? @db.Timestamp(6)
+    updatedAt   DateTime? @db.Timestamp(6)
+    createdAt   DateTime  @default(now()) @db.Timestamp(6)
+    chapters    Chapter[]
+}
+
+model Chapter {
+    id        Int       @id @default(autoincrement())
+    title     String
+    src       String    @unique
+    content   String[]
+    updatedAt DateTime? @db.Timestamp(6)
+    createdAt DateTime  @default(now()) @db.Timestamp(6)
+    bookId    Int
+    book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Authority {
