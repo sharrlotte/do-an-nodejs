@@ -107,49 +107,57 @@ const tabs: Tab = [
 ];
 
 export default async function UserSheet() {
-  const user = await getSession();
+  try {
+    const user = await getSession();
 
-  if (!user) {
+    if (!user) {
+      return (
+        <Link className="p-2 text-nowrap" href="/account/login">
+          Đăng nhập
+        </Link>
+      );
+    }
+    return (
+      <Sheet>
+        <SheetTrigger className="cursor-pointer" asChild>
+          <Avatar className="h-9">
+            <AvatarImage className="rounded-full h-9 w-9" src={user.avatar + '.png'} alt="@shadcn" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+        </SheetTrigger>
+        <SheetContent className="space-y-2 p-2 h-full flex flex-col">
+          <div className="flex gap-2 items-end">
+            <Avatar>
+              <AvatarImage className="rounded-full h-10 w-10" src={user.avatar + '.png'} alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <span>{user.username}</span>
+          </div>
+          <div className="pt-6">
+            <div>
+              {tabs.map((tab, index) => (
+                <React.Fragment key={index}>
+                  {tab.map(({ action, icon, filter }, index) => (
+                    <ProtectedElement key={index} session={user} filter={filter}>
+                      <div className="flex gap-2 hover:bg-blue-500 hover:text-white p-2 rounded-md">
+                        {icon}
+                        {action}
+                      </div>
+                    </ProtectedElement>
+                  ))}
+                  <div className="border-b pt-1 mb-1 w-full" />
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+    );
+  } catch (error) {
     return (
       <Link className="p-2 text-nowrap" href="/account/login">
         Đăng nhập
       </Link>
     );
   }
-  return (
-    <Sheet>
-      <SheetTrigger className="cursor-pointer" asChild>
-        <Avatar className="h-9">
-          <AvatarImage className="rounded-full h-9 w-9" src={user.avatar + '.png'} alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
-        </Avatar>
-      </SheetTrigger>
-      <SheetContent className="space-y-2 p-2 h-full flex flex-col">
-        <div className="flex gap-2 items-end">
-          <Avatar>
-            <AvatarImage className="rounded-full h-10 w-10" src={user.avatar + '.png'} alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <span>{user.username}</span>
-        </div>
-        <div className="pt-6">
-          <div>
-            {tabs.map((tab, index) => (
-              <React.Fragment key={index}>
-                {tab.map(({ action, icon, filter }, index) => (
-                  <ProtectedElement key={index} session={user} filter={filter}>
-                    <div className="flex gap-2 hover:bg-blue-500 hover:text-white p-2 rounded-md">
-                      {icon}
-                      {action}
-                    </div>
-                  </ProtectedElement>
-                ))}
-                <div className="border-b pt-1 mb-1 w-full" />
-              </React.Fragment>
-            ))}
-          </div>
-        </div>
-      </SheetContent>
-    </Sheet>
-  );
 }

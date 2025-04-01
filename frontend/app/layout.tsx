@@ -8,6 +8,7 @@ import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import { SessionProvider } from '@/context/SessionContext';
 import VerifyAccountChecker from '@/app/VerifyAccountCheck';
+import { cn } from '@/lib/utils';
 
 const inter = Font({ subsets: ['latin'], weight: '400' });
 
@@ -22,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="antialiased">
-      <body className={inter.className}>
+    <html lang="en" className="antialiased bg-background text-foreground">
+      <body className={cn(inter.className, 'overflow-y-auto')}>
         <Toaster />
         <NextTopLoader height={2} showSpinner={false} color="blue" />
         <SessionProvider>

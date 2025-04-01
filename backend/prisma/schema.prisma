@@ -21,6 +21,29 @@ model Account {
     @@index([userId])
 }
 
+// User book library model link between User and Book
+model BookLibrary {
+    id     Int @id @default(autoincrement())
+    userId Int
+    bookId Int
+
+    @@unique([userId, bookId])
+    @@index([userId, bookId])
+}
+
+// Model for comment on chapter
+model Comment {
+    id        Int       @id @default(autoincrement())
+    content   String
+    updatedAt DateTime? @db.Timestamp(6)
+    createdAt DateTime  @default(now()) @db.Timestamp(6)
+    userId    Int
+    chapterId Int
+
+    @@index([userId])
+    @@index([chapterId])  
+}
+
 model Book {
     id          Int       @id @default(autoincrement())
     title       String
@@ -36,12 +59,16 @@ model Book {
 model Chapter {
     id        Int       @id @default(autoincrement())
     title     String
+    index     Int
     src       String    @unique
     content   String[]
     updatedAt DateTime? @db.Timestamp(6)
     createdAt DateTime  @default(now()) @db.Timestamp(6)
     bookId    Int
     book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+    @@index([bookId])
+    @@index([index])
 }
 
 model Authority {

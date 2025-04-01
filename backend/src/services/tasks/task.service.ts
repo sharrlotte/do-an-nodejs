@@ -21,7 +21,8 @@ export class TasksService implements OnModuleInit {
 
   @Cron(CronExpression.EVERY_HOUR)
   private async handleCron() {
-    // await this.crawBook();c
+    await this.crawBook();
+    await this.crawlChapters();
   }
 
   async onModuleInit() {
@@ -65,7 +66,9 @@ export class TasksService implements OnModuleInit {
         }
 
         // Go to ech chapter link, and crawl the content
-        for (const chapterLink of chapterLinks.reverse()) {
+        for (let index = 0; index < chapterLinks.length; index++) {
+          const chapterLink = chapterLinks[index];
+
           try {
             // if src exists, break
             const exists = await this.prismaService.chapter.findUnique({
@@ -91,6 +94,7 @@ export class TasksService implements OnModuleInit {
                 title: translated.title,
                 content: translated.content,
                 src: chapterLink.src,
+                index,
                 book: {
                   connect: {
                     id: chapterLink.id,

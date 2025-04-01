@@ -15,6 +15,8 @@ import { RoleAuthoritiesModule } from './services/role-authorities/role-authorit
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskModule } from 'src/services/tasks/task.module';
 import { GeminiModule } from 'src/services/gemini/gemini.module';
+import { NovelModule } from './services/novel/novel.module';
+import { ChapterModule } from './services/chapter/chapter.module';
 
 @Module({
   imports: [
@@ -38,6 +40,8 @@ import { GeminiModule } from 'src/services/gemini/gemini.module';
     RoleAuthoritiesModule,
     TaskModule,
     GeminiModule,
+    NovelModule,
+    ChapterModule,
   ],
   providers: [CloudinaryService],
 })

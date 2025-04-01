@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { getSession } from '../../../../api/auth-server.api';
 import { Avatar, AvatarFallback, AvatarImage } from '../../../../components/ui/avatar';
 import { Button } from '../../../../components/ui/button';
-import PopularServices from '../../../PopularServices';
 import Evaluate from '../../../admin/users/Evaluate';
 import RatingBreakdown from '../../../admin/users/RatingBreakdown';
 import StarIcon from '@heroicons/react/24/solid/StarIcon';
@@ -21,7 +20,6 @@ export default async function page({ children }: { children: ReactNode }) {
               </Avatar>
             </div>
           </div>
-          <PopularServices></PopularServices>
           <div>
             <div>
               <span className="text-3xl">{user?.username}</span>
@@ -72,11 +70,11 @@ export default async function page({ children }: { children: ReactNode }) {
         </div>
         <div className="mt-24">
           <span className="font-black">bai dang</span>
-          <PopularServices />
+          
         </div>
         <div className="mt-20">
           <span className="font-black">carousel</span>
-          <PopularServices />
+          
         </div>
         <div className="mt-10">
           <Button>
@@ -85,7 +83,7 @@ export default async function page({ children }: { children: ReactNode }) {
         </div>
         <div className="mt-10">
           <span className="font-black">Portfolio</span>
-          <PopularServices />
+          
         </div>
         <div className="mt-20">
           <div className="flex flex-row gap-28">

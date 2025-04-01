@@ -8,6 +8,11 @@ const nextConfig = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'img.c0m.io',
+        pathname: '**',
+      },
     ],
   },
 };

@@ -1,9 +1,9 @@
 import { AppConfig } from 'src/config/configuration';
 import { Injectable } from '@nestjs/common';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { GenerateContentResult, GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { ConfigService } from '@nestjs/config';
 
-const translationPrompt = 'Translated the content below to Vietnamese: \n\n';
+const translationPrompt = 'Translated the content below to Vietnamese while maintain valid JSON structure: \n\n';
 
 @Injectable()
 export class GeminiService {
@@ -22,7 +22,7 @@ export class GeminiService {
         responseSchema: { type: SchemaType.OBJECT, required: ['title', 'description'], properties: { title: { type: SchemaType.STRING }, description: { type: SchemaType.STRING } } },
       },
     });
-    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, description })}`).then((res) => JSON.parse(res.response.text()));
+    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, description })}`).then(handleResult);
   }
 
   async translateChapter(title: string, content: string[]): Promise<{ title: string; content: string[] }> {
@@ -46,6 +46,15 @@ export class GeminiService {
         },
       },
     });
-    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, content })}`).then((res) => JSON.parse(res.response.text()));
+    return await model.generateContent(`${translationPrompt} ${JSON.stringify({ title, content })}`).then(handleResult);
+  }
+}
+
+function handleResult(result: GenerateContentResult) {
+  try {
+    return JSON.parse(result.response.text());
+  } catch (e) {
+    console.error(e, result.response);
+    throw new Error('Invalid response: ' + JSON.stringify(result.response));
   }
 }
