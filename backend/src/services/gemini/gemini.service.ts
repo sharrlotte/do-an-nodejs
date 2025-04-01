@@ -15,7 +15,7 @@ export class GeminiService {
 
   async translateBook(title: string, description: string): Promise<{ title: string; description: string }> {
     const model = this.genAi.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-2.0-flash',
       systemInstruction: 'You are an expert manga translator', //
       generationConfig: {
         responseMimeType: 'application/json',

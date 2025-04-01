@@ -25,8 +25,8 @@ export class TasksService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    await this.crawBook();
-    await this.crawlChapters();
+    // await this.crawBook();
+    // await this.crawlChapters();
   }
 
   private async crawlChapters() {
@@ -42,13 +42,12 @@ export class TasksService implements OnModuleInit {
 
         // Navigate to the book's detail page
         await page.goto(book.src + 'list.html');
-
         // Get .more > a and click it to see list of chapters
-        const moreBtn = await page.$('.more a');
+        const moreBtn = await page.$('.more > a');
         if (moreBtn) {
           await moreBtn.click();
-          // Wait for .more a not appear any more
-          await page.waitForSelector('.more a', { hidden: true });
+          // Wait for .more > a not appear any more
+          await page.waitForSelector('.more > a', { hidden: true });
         }
 
         // Get all the chapter links from [itemprop=itemListElement] > a, and title from [itemprop=itemListElement] > a > span
@@ -57,15 +56,18 @@ export class TasksService implements OnModuleInit {
         for (const chapterLinkElement of chapterLinksElements) {
           const src = await chapterLinkElement.evaluate((el) => el.href);
           const title = await chapterLinkElement.evaluate((el) => el.textContent?.trim() || '');
-          chapterLinks.push({ id: book.id, src, title });
-          console.log('Found chapter:', src, title);
+          if (!src || !title) {
+            console.log('No src or title: ' + chapterLinkElement.evaluate((el) => el.textContent?.trim() || ''));
+          } else {
+            console.log('Found chapter:', src, title);
+            chapterLinks.push({ id: book.id, src, title });
+          }
         }
 
         // Go to ech chapter link, and crawl the content
-        for (const chapterLink of chapterLinks.reverse().slice(0, 3)) {
+        for (const chapterLink of chapterLinks.reverse()) {
           try {
             // if src exists, break
-            console.log('Crawl chapter:', chapterLink);
             const exists = await this.prismaService.chapter.findUnique({
               where: {
                 src: chapterLink.src,
@@ -73,8 +75,10 @@ export class TasksService implements OnModuleInit {
             });
 
             if (exists) {
-              break;
+              continue;
             }
+
+            console.log('Crawl chapter:', chapterLink);
 
             await page.goto(chapterLink.src);
             // Get div with id=content > p as list of paragraphs
