@@ -6,7 +6,7 @@ import * as cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -18,7 +18,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: ['http://localhost:3000', 'https://do-an-nodejs.onrender.com', 'https://do-an-nodejs.vercel.app'],
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE, OPTIONS',
     credentials: true,
   });
 
