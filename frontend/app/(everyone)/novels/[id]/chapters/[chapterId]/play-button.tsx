@@ -3,17 +3,19 @@ import { useTts } from '@/hook/use-tts';
 import { PauseIcon, PlayIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+const sentence_separator = '. ';
+
 export default function PlayButton({ text }: { text: string[] }) {
   const [isScrollFucus, setIsScrollFucus] = useState(false);
   const { speech, state, pause, progress, progressCharIndex } = useTts();
-  const joinedText = text.join('. ');
+  const joinedText = text.join(sentence_separator);
 
   useEffect(() => {
     let arrayIndex = 0;
     let charIndex = 0;
 
-    while (charIndex <= progressCharIndex) {
-      charIndex += text[arrayIndex].length + 2; // Plus 2 for the space and period after each sentence
+    while (arrayIndex < text.length && charIndex + text[arrayIndex].length <= progressCharIndex) {
+      charIndex += text[arrayIndex].length;
       arrayIndex++;
 
       if (arrayIndex >= text.length) {
@@ -22,8 +24,7 @@ export default function PlayButton({ text }: { text: string[] }) {
     }
 
     const content = document.getElementById('content');
-
-    if (content && isScrollFucus) {
+    if (content) {
       for (let i = 0; i < content.children.length; i++) {
         if (i === arrayIndex) {
           content.children[i]?.classList.add('text-amber-600');
@@ -31,16 +32,34 @@ export default function PlayButton({ text }: { text: string[] }) {
         }
         content.children[i]?.classList.remove('text-amber-600');
       }
-      content.children[arrayIndex]?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-        inline: 'center',
-      });
+
+      if (arrayIndex >= content.children.length) {
+        return;
+      }
+
+      if (isScrollFucus) {
+        content.children[arrayIndex]?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+          inline: 'center',
+        });
+      }
     }
 
-    document.addEventListener('scroll', () => {
-      setIsScrollFucus(false);
-    });
+    const onScroll = () => {
+      // content.children[arrayIndex] check if it is in viewport
+      if (content?.children[arrayIndex]?.getBoundingClientRect()?.top ?? 0 < 0) {
+        setIsScrollFucus(false);
+      } else {
+        setIsScrollFucus(true);
+      }
+    };
+
+    // Add onScroll to body element
+    document.body.addEventListener('scroll', onScroll);
+    return () => {
+      document.body.removeEventListener('scroll', onScroll);
+    };
   }, [progressCharIndex, isScrollFucus, text]);
 
   const onClick = () => {

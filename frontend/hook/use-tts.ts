@@ -108,6 +108,8 @@ export function useTts(): TTSHookResult {
     utteranceRef.current = null;
   }, []);
 
+  const progress = Math.min((progressCharIndex / textLengthRef.current) * 100, 100);
+
   return {
     state,
     voices,
@@ -123,7 +125,7 @@ export function useTts(): TTSHookResult {
     setPitch,
     setRate,
     setVolume,
-    progress: Math.min((progressCharIndex / textLengthRef.current) * 100, 100),
+    progress: isNaN(progress) ? 0 : progress,
     progressCharIndex,
   };
 }

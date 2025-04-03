@@ -1,4 +1,5 @@
-import { getSession } from '@/api/auth-server.api';
+'use client';
+
 import ProtectedElement from '@/components/layout/protected-element';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -9,6 +10,7 @@ import Link from 'next/link';
 import { ArrowLeftEndOnRectangleIcon, BookOpenIcon, Cog6ToothIcon, HeartIcon, UserIcon } from '@heroicons/react/24/outline';
 import env from '@/constant/env';
 import { Filter } from '@/lib/utils';
+import { useSession } from '@/context/SessionContext';
 
 type Tab = {
   icon: ReactNode;
@@ -106,9 +108,11 @@ const tabs: Tab = [
   ],
 ];
 
-export default async function UserSheet() {
+export default function UserSheet() {
+  const { session: user, state } = useSession();
+
   try {
-    const user = await getSession();
+    if (state === 'loading') return <></>;
 
     if (!user) {
       return (

@@ -9,6 +9,7 @@ import { SettingsIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import PlayButton from '@/app/(everyone)/novels/[id]/chapters/[chapterId]/play-button';
 import { VoiceProvider } from '@/context/VoiceContext';
+import UserSheet from '@/app/UserSheet';
 
 type Props = {
   params: Promise<{ id: string; chapterId: string }>;
@@ -25,10 +26,11 @@ export default async function Page({ params }: Props) {
   return (
     <VoiceProvider>
       <div className="bg-white">
-        <div className="bg-accent text-accent-foreground w-full p-4">
+        <div className="bg-accent text-accent-foreground w-full p-4 flex justify-between items-center">
           <Link className="text-2xl" href="/">
             NovelScan
           </Link>
+          <UserSheet />
         </div>
         <div className="p-4 sticky top-0 backdrop-blur-sm bg-white/50 flex items-center gap-2">
           <Breadcrumb>
@@ -74,7 +76,7 @@ export default async function Page({ params }: Props) {
           </div>
           <h1 className="text-3xl font-bold mb-4">{chapter.title}</h1>
           <main id="content">
-            {chapter.content.slice(1).map((p, index) => (
+            {chapter.content.map((p, index) => (
               <p key={index}>{p}</p>
             ))}
           </main>
