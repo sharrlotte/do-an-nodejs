@@ -14,8 +14,8 @@ export default function PlayButton({ text }: { text: string[] }) {
     let arrayIndex = 0;
     let charIndex = 0;
 
-    while (arrayIndex < text.length && charIndex + text[arrayIndex].length <= progressCharIndex) {
-      charIndex += text[arrayIndex].length;
+    while (arrayIndex < text.length && charIndex + text[arrayIndex].length + sentence_separator.length <= progressCharIndex) {
+      charIndex += text[arrayIndex].length + sentence_separator.length;
       arrayIndex++;
 
       if (arrayIndex >= text.length) {
