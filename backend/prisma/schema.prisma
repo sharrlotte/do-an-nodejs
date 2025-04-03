@@ -74,7 +74,7 @@ model Novel {
     imageUrl     String
     src          String    @unique
     srcUpdated   DateTime? @db.Timestamp(6)
-    updatedAt    DateTime? @db.Timestamp(6)
+    updatedAt    DateTime? @default(now()) @db.Timestamp(6)
     createdAt    DateTime  @default(now()) @db.Timestamp(6)
     followCount  Int       @default(0)
     commentCount Int       @default(0)

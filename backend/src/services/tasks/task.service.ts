@@ -102,6 +102,13 @@ export class TasksService implements OnModuleInit {
               },
             });
 
+            this.prismaService.novel.update({
+              where: { id: chapterLink.id },
+              data: {
+                updatedAt: new Date(),
+              },
+            });
+
             console.log('Added:', chapter);
           } catch (e) {
             console.error(e);
