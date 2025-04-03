@@ -8,4 +8,5 @@ export type Chapter = {
   previousChapterId: number | undefined;
   createdAt: Date;
   novel: Novel;
+  commentCount: number;
 };

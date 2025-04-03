@@ -23,7 +23,7 @@ export function ChapterList({ id }: { id: number }) {
   const { chapters } = novel;
 
   return (
-    <div className="m-6 md:max-h-[80dvh]">
+    <div className="md:max-h-[80dvh] mt-4">
       {chapters.map((chapter, index) => (
         <Link href={`/novels/${novel.id}/chapters/${chapter.id}`} key={index}>
           <DialogClose className="w-full text-ellipsis">

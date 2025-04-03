@@ -1,5 +1,6 @@
 'use client';
 
+import { Slider } from '@/components/ui/slider';
 import { useTts } from '@/hook/use-tts';
 
 export default function ChapterSetting() {
@@ -20,7 +21,7 @@ export default function ChapterSetting() {
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Pitch</label>
-        <input type="range" min="0.5" max="2" step="0.1" value={pitch} onChange={(event) => setPitch(event.currentTarget.valueAsNumber)} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+        <Slider min={0.5} max={2} step={0.1} value={[pitch]} onValueChange={(value) => setPitch(value[0])} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
         <div className="flex justify-between text-xs text-gray-500">
           <span>0.5x</span>
           <span>2x</span>
@@ -29,7 +30,7 @@ export default function ChapterSetting() {
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Speed</label>
-        <input type="range" min="0.5" max="2" step="0.1" value={rate} onChange={(event) => setRate(event.currentTarget.valueAsNumber)} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+        <Slider min={0.5} max={2} step={0.1} value={[rate]} onValueChange={(value) => setRate(value[0])} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
         <div className="flex justify-between text-xs text-gray-500">
           <span>0.5x</span>
           <span>2x</span>
@@ -38,7 +39,7 @@ export default function ChapterSetting() {
 
       <div className="space-y-2">
         <label className="block text-sm font-medium text-gray-700">Volume</label>
-        <input type="range" min="0" max="1" step="0.1" value={volume} onChange={(event) => setVolume(event.currentTarget.valueAsNumber)} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
+        <Slider min={0} max={1} step={0.1} value={[volume]} onValueChange={(value) => setVolume(value[0])} className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer accent-blue-500" />
         <div className="flex justify-between text-xs text-gray-500">
           <span>0%</span>
           <span>100%</span>

@@ -51,4 +51,10 @@ export class NovelController {
   isFollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
     return this.novelService.isFollow(userId, bookId);
   }
+
+  @Get('following')
+  @UseGuards(AuthGuard)
+  findUserFollowingNovels(@CurrentUser('id') userId: number, @Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
+    return this.novelService.findUserFollowingNovels(userId, orderBy, order);
+  }
 }

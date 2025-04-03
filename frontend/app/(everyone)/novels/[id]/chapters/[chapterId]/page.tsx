@@ -5,14 +5,15 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 import { Suspense } from 'react';
 import { ChapterList } from '@/app/(everyone)/novels/[id]/chapters/[chapterId]/chapter-list';
-import { SettingsIcon } from 'lucide-react';
+import { ChevronLeftIcon, ChevronRightIcon, ListIcon, SettingsIcon } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import PlayButton from '@/app/(everyone)/novels/[id]/chapters/[chapterId]/play-button';
 import { VoiceProvider } from '@/context/VoiceContext';
 import UserSheet from '@/app/UserSheet';
+import CommentSection from '@/components/common/comment-section';
 
 type Props = {
-  params: Promise<{ id: string; chapterId: string }>;
+  params: Promise<{ id: number; chapterId: number }>;
 };
 
 const ChapterSetting = dynamic(() => import('@/app/(everyone)/novels/[id]/chapters/[chapterId]/chapter-setting'));
@@ -63,14 +64,14 @@ export default async function Page({ params }: Props) {
         <div className="max-w-[1000px] mx-auto p-4">
           <div className="flex w-full justify-center items-center gap-2 mt-4 mb-4 text-white">
             {previousChapterId && (
-              <Link className="px-4 py-1 rounded-md bg-amber-600" href={`/novels/${novel.id}/chapters/${previousChapterId}`}>
-                {'<'} Chapter trước
+              <Link className="px-2 py-1 flex items-center rounded-md bg-amber-600" href={`/novels/${novel.id}/chapters/${previousChapterId}`}>
+                <ChevronLeftIcon size={20} /> Chapter trước
               </Link>
             )}
             <ChapterListDialog id={novel.id} />
             {nextChapterId && (
-              <Link className="px-4 py-1 rounded-md bg-amber-600" href={`/novels/${novel.id}/chapters/${nextChapterId}`}>
-                Chapter kế {'>'}
+              <Link className="px-2 py-1 flex items-center rounded-md bg-amber-600" href={`/novels/${novel.id}/chapters/${nextChapterId}`}>
+                Chapter kế <ChevronRightIcon size={20} />
               </Link>
             )}
           </div>
@@ -82,13 +83,18 @@ export default async function Page({ params }: Props) {
           </main>
           <div className="w-full mt-6"></div>
           <div className="flex w-full justify-between mt-10 underline mb-4">
-            {previousChapterId && <Link href={`/novels/${novel.id}/chapters/${previousChapterId}`}>{'<'} Chapter trước</Link>}
-            {nextChapterId && (
-              <Link className="ml-auto" href={`/novels/${novel.id}/chapters/${nextChapterId}`}>
-                Chapter {'>'}
+            {previousChapterId && (
+              <Link className="flex items-center" href={`/novels/${novel.id}/chapters/${previousChapterId}`}>
+                <ChevronLeftIcon size={20} /> Chapter trước
               </Link>
             )}
-          </div>{' '}
+            {nextChapterId && (
+              <Link className="ml-auto flex items-center" href={`/novels/${novel.id}/chapters/${nextChapterId}`}>
+                Chapter <ChevronRightIcon size={20} />
+              </Link>
+            )}
+          </div>
+          <CommentSection novelId={id} chapterId={chapterId} />
         </div>
       </div>
     </VoiceProvider>
@@ -98,7 +104,10 @@ export default async function Page({ params }: Props) {
 function ChapterListDialog({ id }: { id: number }) {
   return (
     <Dialog>
-      <DialogTrigger className="px-4 py-1 rounded-md bg-amber-600">Danh sách chương</DialogTrigger>
+      <DialogTrigger className="px-3 flex py-1 rounded-md bg-amber-600 items-center gap-1">
+        <ListIcon size={20} />
+        Danh sách chương
+      </DialogTrigger>
       <DialogContent>
         <Suspense>
           <ChapterList id={id} />

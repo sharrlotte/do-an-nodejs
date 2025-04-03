@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { BookOpen, BookmarkPlus, Share2, Database } from 'lucide-react';
+import CommentSection from '@/components/common/comment-section';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -30,11 +31,11 @@ export default async function Page({ params }: Props) {
         <Tabs defaultValue="chapters" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-gray-200">
             <TabsTrigger value="chapters" className="font-bold">
-              Chapters
+              Chương
             </TabsTrigger>
-            <TabsTrigger value="comments">Comments (161)</TabsTrigger>
-            <TabsTrigger value="art">Art</TabsTrigger>
-            <TabsTrigger value="related">Related</TabsTrigger>
+            <TabsTrigger value="comments">Bình luận ({novel.commentCount})</TabsTrigger>
+            <TabsTrigger value="art">Ảnh</TabsTrigger>
+            <TabsTrigger value="related">Liên quan</TabsTrigger>
           </TabsList>
 
           <TabsContent value="chapters" className="mt-4">
@@ -44,7 +45,7 @@ export default async function Page({ params }: Props) {
           <TabsContent value="comments" className="mt-4">
             <Card>
               <CardContent className="p-6">
-                <p>Comments section would go here</p>
+                <CommentSection novelId={novel.id} />
               </CardContent>
             </Card>
           </TabsContent>
@@ -159,7 +160,7 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
             </div>
             <div className="flex items-center">
               <BookOpen className="h-5 w-5" />
-              <span className="ml-1">161</span>
+              <span className="ml-1">{novel.commentCount}</span>
             </div>
             <div className="text-gray-400">N/A</div>
           </div>

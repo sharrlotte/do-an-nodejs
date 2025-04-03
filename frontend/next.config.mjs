@@ -13,6 +13,11 @@ const nextConfig = {
         hostname: 'img.c0m.io',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'github.com',
+        pathname: '**',
+      },
     ],
   },
 };

@@ -86,4 +86,23 @@ export class NovelService {
     });
     return bookLibrary !== null;
   }
+
+  async findUserFollowingNovels(userId: number, orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
+    return this.prismaService.book.findMany({
+      where: {
+        BookLibrary: {
+          some: {
+            userId,
+          },
+        },
+      },
+      orderBy: orderBy ? { [orderBy]: order } : undefined,
+      include: {
+        chapters: {
+          select: { id: true, title: true, createdAt: true },
+          orderBy: { index: 'desc' },
+        },
+      },
+    });
+  }
 }

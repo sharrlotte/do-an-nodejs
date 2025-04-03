@@ -73,10 +73,12 @@ export default function PlayButton({ text }: { text: string[] }) {
 
   return (
     <button className="p-1 relative" onClick={onClick} aria-label={state === 'playing' ? 'Dừng' : 'Đọc'}>
-      <svg className="absolute inset-0 w-full h-full -rotate-90">
-        <circle cx="50%" cy="50%" r="45%" fill="none" stroke="gray" strokeWidth="3" strokeDasharray="100 100" className="opacity-50" />
-        <circle cx="50%" cy="50%" r="45%" fill="none" stroke="#22c55e" strokeWidth="3" strokeDasharray={`${progress} 100`} className="transition-all duration-200" />
-      </svg>
+      {state === 'playing' && (
+        <svg className="absolute inset-0 w-full h-full -rotate-90">
+          <circle cx="50%" cy="50%" r="45%" fill="none" stroke="gray" strokeWidth="3" strokeDasharray="100 100" className="opacity-50" />
+          <circle cx="50%" cy="50%" r="45%" fill="none" stroke="#22c55e" strokeWidth="3" strokeDasharray={`${progress} 100`} className="transition-all duration-200" />
+        </svg>
+      )}
       {state === 'playing' ? <PauseIcon size={20} /> : <PlayIcon size={20} />}
     </button>
   );

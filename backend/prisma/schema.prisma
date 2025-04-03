@@ -23,9 +23,11 @@ model Account {
 
 // User book library model link between User and Book
 model BookLibrary {
-    id     Int @id @default(autoincrement())
+    id     Int  @id @default(autoincrement())
     userId Int
     bookId Int
+    novel  Book @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    user   User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
     @@unique([userId, bookId])
     @@index([userId, bookId])
@@ -38,35 +40,48 @@ model Comment {
     updatedAt DateTime? @db.Timestamp(6)
     createdAt DateTime  @default(now()) @db.Timestamp(6)
     userId    Int
-    chapterId Int
+    chapterId Int?
+    novelId   Int
 
-    @@index([userId])
+    user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    novel     Book     @relation(fields: [novelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    commentId Int?
+
+    @@index([novelId])
     @@index([chapterId])
+    @@index([userId])
 }
 
 model Book {
-    id          Int       @id @default(autoincrement())
-    title       String
-    description String
-    imageUrl    String
-    src         String    @unique
-    srcUpdated  DateTime? @db.Timestamp(6)
-    updatedAt   DateTime? @db.Timestamp(6)
-    createdAt   DateTime  @default(now()) @db.Timestamp(6)
-    followCount Int       @default(0)
-    chapters    Chapter[]
+    id           Int       @id @default(autoincrement())
+    title        String
+    description  String
+    imageUrl     String
+    src          String    @unique
+    srcUpdated   DateTime? @db.Timestamp(6)
+    updatedAt    DateTime? @db.Timestamp(6)
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    followCount  Int       @default(0)
+    commentCount Int       @default(0)
+    chapters     Chapter[]
+    Comment      Comment[]
+
+    BookLibrary BookLibrary[]
 }
 
 model Chapter {
-    id        Int       @id @default(autoincrement())
-    title     String
-    index     Int
-    src       String    @unique
-    content   String[]
-    updatedAt DateTime? @db.Timestamp(6)
-    createdAt DateTime  @default(now()) @db.Timestamp(6)
-    bookId    Int
-    book      Book      @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+    id           Int       @id @default(autoincrement())
+    title        String
+    index        Int
+    src          String    @unique
+    content      String[]
+    updatedAt    DateTime? @db.Timestamp(6)
+    createdAt    DateTime  @default(now()) @db.Timestamp(6)
+    commentCount Int       @default(0)
+    bookId       Int
+    book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+    Comment      Comment[]
 
     @@index([bookId])
     @@index([index])
@@ -106,6 +121,9 @@ model User {
     accounts    Account[]
     authorities UserAuthority[]
     roles       UserRole[]
+
+    Comment     Comment[]
+    BookLibrary BookLibrary[]
 }
 
 model UserAuthority {
