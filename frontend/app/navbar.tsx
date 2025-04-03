@@ -6,7 +6,7 @@ export function Navbar() {
   const ranking = ['Top View', 'Top Rated', 'Newest', 'Trending'];
 
   return (
-    <Menubar className="w-full flex gap-4 justify-center">
+    <Menubar className="w-full flex gap-4 justify-center overflow-x-auto">
       <MenubarMenu>
         <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
           <List size={24} className="pr-2" /> Thể Loại
