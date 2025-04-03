@@ -8,7 +8,7 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "Chapter" DROP CONSTRAINT "Chapter_bookId_fkey";
+ALTER TABLE "Chapter" DROP CONSTRAINT "Chapter_novelId_fkey";
 
 -- DropIndex
 DROP INDEX "Chapter_src_key";
@@ -27,4 +27,4 @@ ADD COLUMN     "createdAt" TIMESTAMP(6) NOT NULL,
 ADD COLUMN     "updatedAt" TIMESTAMP(6);
 
 -- AddForeignKey
-ALTER TABLE "Chapter" ADD CONSTRAINT "Chapter_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "Book"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
+ALTER TABLE "Chapter" ADD CONSTRAINT "Chapter_novelId_fkey" FOREIGN KEY ("novelId") REFERENCES "Book"("id") ON DELETE CASCADE ON UPDATE NO ACTION;

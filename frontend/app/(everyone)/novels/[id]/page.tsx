@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { BookOpen, BookmarkPlus, Share2, Database } from 'lucide-react';
 import CommentSection from '@/components/common/comment-section';
+import FollowButton from '@/app/(everyone)/novels/[id]/follow-button';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -112,16 +113,10 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
         <div className="flex-grow space-y-4">
           <div>
             <h1 className="text-5xl font-bold text-white mb-1">{novel.title}</h1>
-            <h2 className="text-xl text-gray-300">エデンズ ゼロ</h2>
-            <p className="text-xl mt-2">Mashima Hiro</p>
           </div>
-
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-2">
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white">
-              <BookmarkPlus className="mr-2 h-4 w-4" />
-              Add To Library
-            </Button>
+            <FollowButton novelId={novel.id} />
             <Button variant="outline" className="border-gray-600">
               <BookOpen className="h-5 w-5" />
             </Button>
@@ -167,24 +162,7 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
 
           {/* Description */}
           <p className="text-lg">{novel.description}</p>
-
-          <p className="text-lg">
-            A new manga from Hiro Mashima, of <span className="text-red-500">Rave Master</span> and <span className="text-red-500">Fairy Tail</span> fame.
-          </p>
-
           <Separator className="bg-gray-700" />
-
-          {/* Links */}
-          <div>
-            <h3 className="text-xl font-bold mb-2">Links:</h3>
-            <ul className="list-disc list-inside">
-              <li>
-                <Link href="#" className="text-red-500 hover:underline">
-                  Alternate Official English
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

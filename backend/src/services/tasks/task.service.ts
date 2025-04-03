@@ -26,15 +26,14 @@ export class TasksService implements OnModuleInit {
   }
 
   async onModuleInit() {
-    // await this.crawBook();
-    // await this.crawlChapters();
+    // this.crawBook().then(() => this.crawlChapters());
   }
 
   private async crawlChapters() {
-    const books = await this.prismaService.book.findMany();
+    const books = await this.prismaService.novel.findMany();
     // ONLY crawl the first book for testing purposes
     const chapterLinks: { id: number; src: string; title: string }[] = [];
-    for (const book of books.slice(0, 1)) {
+    for (const book of books) {
       try {
         console.log('Crawl book:', book);
         // Create browser and page
@@ -95,7 +94,7 @@ export class TasksService implements OnModuleInit {
                 content: translated.content,
                 src: chapterLink.src,
                 index,
-                book: {
+                novel: {
                   connect: {
                     id: chapterLink.id,
                   },
@@ -131,10 +130,10 @@ export class TasksService implements OnModuleInit {
     await page.waitForSelector('[itemprop=itemListElement] > a');
     const allBookLinks = await page.$$eval('[itemprop=itemListElement] > a', (links) => links.map((link) => link.href));
     // ONLY crawl the first 10 books for testing purposes
-    for (const src of allBookLinks.slice(0, 10)) {
+    for (const src of allBookLinks) {
       try {
         // Check if the book already exists in the database
-        const exists = await this.prismaService.book.findUnique({
+        const exists = await this.prismaService.novel.findUnique({
           where: { src },
         });
         if (exists) {
@@ -172,7 +171,7 @@ export class TasksService implements OnModuleInit {
       }
     }
 
-    await this.prismaService.book.createMany({ data: books });
+    await this.prismaService.novel.createMany({ data: books });
     books = [];
 
     // const pageContainer = await page.$('.qm-page-number');
@@ -199,7 +198,7 @@ export class TasksService implements OnModuleInit {
     //     try {
     //       const [src, title] = await bookData.$eval('.s-tit > a', (el) => [el.href, el.text]);
 
-    //       const exists = await this.prismaService.book.findUnique({
+    //       const exists = await this.prismaService.novel.findUnique({
     //         where: {
     //           src,
     //         },
@@ -245,7 +244,7 @@ export class TasksService implements OnModuleInit {
     //       console.error(e);
     //     }
     //   }
-    //   await this.prismaService.book.createMany({ data: books });
+    //   await this.prismaService.novel.createMany({ data: books });
     //   books = [];
     // }
 

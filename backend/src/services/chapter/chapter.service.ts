@@ -15,11 +15,11 @@ export class ChapterService {
   }
 
   async findOne(id: number) {
-    const current = await this.prismaService.chapter.findUniqueOrThrow({ where: { id }, include: { book: true } });
+    const current = await this.prismaService.chapter.findUniqueOrThrow({ where: { id }, include: { novel: true } });
     const [next, previous] = await Promise.all([
       this.prismaService.chapter.findFirst({
         where: {
-          bookId: current.bookId,
+          novelId: current.novelId,
           id: {
             gt: current.id,
           },
@@ -27,7 +27,7 @@ export class ChapterService {
       }),
       this.prismaService.chapter.findFirst({
         where: {
-          bookId: current.bookId,
+          novelId: current.novelId,
           id: {
             lt: current.id,
           },
@@ -35,11 +35,11 @@ export class ChapterService {
       }),
     ]);
 
-    const { book, ...data } = current;
+    const { novel, ...data } = current;
 
     return {
       ...data,
-      novel: book,
+      novel,
       nextChapterId: next?.id,
       previousChapterId: previous?.id,
     };

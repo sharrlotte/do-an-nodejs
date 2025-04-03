@@ -11,6 +11,7 @@ export default function useFollow(novelId: number) {
       const response = await api.get(`/novels/${novelId}/follow`);
       return response.data;
     },
+    retry: 0,
   });
 
   const { mutate: toggleFollow, isPending: isLoading } = useMutation({

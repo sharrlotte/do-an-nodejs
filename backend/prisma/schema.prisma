@@ -21,16 +21,30 @@ model Account {
     @@index([userId])
 }
 
-// User book library model link between User and Book
-model BookLibrary {
-    id     Int  @id @default(autoincrement())
-    userId Int
-    bookId Int
-    novel  Book @relation(fields: [bookId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    user   User @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+// User Novel library model link between User and Novel
+model NovelLibrary {
+    id      Int   @id @default(autoincrement())
+    userId  Int
+    novelId Int
+    novel   Novel @relation(fields: [novelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    user    User  @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-    @@unique([userId, bookId])
-    @@index([userId, bookId])
+    @@unique([userId, novelId])
+    @@index([userId, novelId])
+}
+
+model ReadHistory {
+    id        Int      @id @default(autoincrement())
+    userId    Int
+    novelId   Int
+    chapterId Int
+    novel     Novel    @relation(fields: [novelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    chapter   Chapter  @relation(fields: [chapterId], references: [id])
+    createdAt DateTime @default(now()) @db.Timestamp(6)
+
+    @@unique([userId, novelId])
+    @@index([userId, novelId])
 }
 
 // Model for comment on chapter
@@ -45,7 +59,7 @@ model Comment {
 
     user      User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     chapter   Chapter? @relation(fields: [chapterId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    novel     Book     @relation(fields: [novelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+    novel     Novel    @relation(fields: [novelId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     commentId Int?
 
     @@index([novelId])
@@ -53,7 +67,7 @@ model Comment {
     @@index([userId])
 }
 
-model Book {
+model Novel {
     id           Int       @id @default(autoincrement())
     title        String
     description  String
@@ -67,23 +81,25 @@ model Book {
     chapters     Chapter[]
     Comment      Comment[]
 
-    BookLibrary BookLibrary[]
+    NovelLibrary NovelLibrary[]
+    ReadHistory  ReadHistory[]
 }
 
 model Chapter {
-    id           Int       @id @default(autoincrement())
+    id           Int           @id @default(autoincrement())
     title        String
     index        Int
-    src          String    @unique
+    src          String        @unique
     content      String[]
-    updatedAt    DateTime? @db.Timestamp(6)
-    createdAt    DateTime  @default(now()) @db.Timestamp(6)
-    commentCount Int       @default(0)
-    bookId       Int
-    book         Book      @relation(fields: [bookId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+    updatedAt    DateTime?     @db.Timestamp(6)
+    createdAt    DateTime      @default(now()) @db.Timestamp(6)
+    commentCount Int           @default(0)
+    novelId      Int
+    novel        Novel         @relation(fields: [novelId], references: [id], onDelete: Cascade, onUpdate: NoAction)
     Comment      Comment[]
+    ReadHistory  ReadHistory[]
 
-    @@index([bookId])
+    @@index([novelId])
     @@index([index])
 }
 
@@ -122,8 +138,9 @@ model User {
     authorities UserAuthority[]
     roles       UserRole[]
 
-    Comment     Comment[]
-    BookLibrary BookLibrary[]
+    Comment      Comment[]
+    NovelLibrary NovelLibrary[]
+    ReadHistory  ReadHistory[]
 }
 
 model UserAuthority {

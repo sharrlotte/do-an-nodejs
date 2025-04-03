@@ -11,6 +11,7 @@ import PlayButton from '@/app/(everyone)/novels/[id]/chapters/[chapterId]/play-b
 import { VoiceProvider } from '@/context/VoiceContext';
 import UserSheet from '@/app/UserSheet';
 import CommentSection from '@/components/common/comment-section';
+import SaveReadHistory from '@/app/(everyone)/novels/[id]/chapters/[chapterId]/save-read-history';
 
 type Props = {
   params: Promise<{ id: number; chapterId: number }>;
@@ -97,6 +98,7 @@ export default async function Page({ params }: Props) {
           <CommentSection novelId={id} chapterId={chapterId} />
         </div>
       </div>
+      <SaveReadHistory novelId={id} chapterId={chapterId} />
     </VoiceProvider>
   );
 }

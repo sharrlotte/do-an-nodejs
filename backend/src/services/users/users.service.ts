@@ -55,6 +55,23 @@ export class UsersService {
     return { ...user, roles, authorities };
   }
 
+  async history(userId: number) {
+    return this.prisma.readHistory.findMany({
+      where: {
+        userId,
+      },
+      include: {
+        chapter: {
+          select: {
+            id: true,
+            title: true,
+          },
+        },
+        novel: true,
+      },
+    });
+  }
+
   async create(providerId: string, provider: AuthProvider, { username, profileUrl }: { username: string; profileUrl: string }): Promise<UserWithAuthoritiesAndRoles> {
     const role = await this.prisma.role.findFirstOrThrow({ where: { name: 'USER' } });
 
@@ -81,6 +98,26 @@ export class UsersService {
     });
 
     return { ...user, authorities: [], roles: [role.name] };
+  }
+
+  async findUserFollowingNovels(userId: number, orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
+    return this.prisma.novel.findMany({
+      where: {
+        NovelLibrary: {
+          some: {
+            userId,
+          },
+        },
+      },
+      orderBy: orderBy ? { [orderBy]: order } : undefined,
+      include: {
+        chapters: {
+          select: { id: true, title: true, createdAt: true },
+          orderBy: { index: 'desc' },
+          take: 1,
+        },
+      },
+    });
   }
 
   async get(id: number): Promise<User> {

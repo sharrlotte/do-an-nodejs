@@ -36,25 +36,25 @@ export class NovelController {
 
   @Post(':id/follow')
   @UseGuards(AuthGuard)
-  follow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
-    return this.novelService.follow(userId, bookId);
+  follow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number) {
+    return this.novelService.follow(userId, novelId);
   }
 
   @Delete(':id/follow')
   @UseGuards(AuthGuard)
-  unfollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
-    return this.novelService.unfollow(userId, bookId);
+  unfollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number) {
+    return this.novelService.unfollow(userId, novelId);
   }
 
   @Get(':id/follow')
   @UseGuards(AuthGuard)
-  isFollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
-    return this.novelService.isFollow(userId, bookId);
+  isFollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number) {
+    return this.novelService.isFollow(userId, novelId);
   }
 
-  @Get('following')
+  @Get(':id/chapters/:chapterId/read')
   @UseGuards(AuthGuard)
-  findUserFollowingNovels(@CurrentUser('id') userId: number, @Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
-    return this.novelService.findUserFollowingNovels(userId, orderBy, order);
+  read(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number, @Param('chapterId', ParseIntPipe) chapterId: number) {
+    return this.novelService.read(userId, novelId, chapterId);
   }
 }

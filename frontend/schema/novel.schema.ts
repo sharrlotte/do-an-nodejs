@@ -7,6 +7,16 @@ export type Novel = {
   commentCount: number;
 };
 
+export type FollowingNovel = {
+  id: number;
+  title: string;
+  categories: string[];
+  description: string;
+  imageUrl: string;
+  commentCount: number;
+  chapters: [Chapter];
+};
+
 export type NovelDetail = {
   id: number;
   title: string;

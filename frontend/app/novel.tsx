@@ -27,7 +27,7 @@ export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'c
       <div className="font-semibold text-blue-400 p-2">{text}</div>
       <CarouselContent>
         {novels?.map((novel, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4">
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 relative">
             <NovelCard novel={novel} />
           </CarouselItem>
         ))}
@@ -49,6 +49,9 @@ function NovelCard({ novel }: { novel: Novel }) {
 
   return (
     <Card className="flex-row flex gap-2 items-start relative group h-full">
+      <button onClick={handleFollowClick} disabled={isLoading} className={cn('absolute top-2 right-2 text-sm text-gray-700 backdrop-blur-sm hidden hover:flex group-hover:flex', { flex: isFollowing })}>
+        {isLoading ? <Loading /> : isFollowing ? <BookmarkIcon fill="yellow" stroke="transparent" /> : <BookmarkIcon />}
+      </button>
       <Link className="p-4" href={`/novels/${novel.id}`}>
         <div className="min-w-[120px] h-[160px] rounded-lg overflow-hidden">
           <Image src={novel.imageUrl} alt={novel.title} width={120} height={160} className="object-cover" />
@@ -61,9 +64,6 @@ function NovelCard({ novel }: { novel: Novel }) {
           </CardContent>
         </div>
       </Link>
-      <button onClick={handleFollowClick} disabled={isLoading} className={cn('absolute top-2 right-2 text-sm text-gray-700 backdrop-blur-sm hidden group-hover:flex', { flex: isFollowing })}>
-        {isLoading ? <Loading /> : isFollowing ? <BookmarkIcon fill="yellow" stroke="transparent" /> : <BookmarkIcon />}
-      </button>
     </Card>
   );
 }

@@ -19,7 +19,7 @@ export class CommentService {
             },
           },
         }),
-        this.prismaService.book.update({
+        this.prismaService.novel.update({
           where: {
             id: createCommentDto.novelId,
           },
@@ -38,7 +38,7 @@ export class CommentService {
       ]);
     } else {
       return this.prismaService.$transaction([
-        this.prismaService.book.update({
+        this.prismaService.novel.update({
           where: {
             id: createCommentDto.novelId,
           },

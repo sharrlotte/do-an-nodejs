@@ -13,13 +13,13 @@ export class NovelService {
   }
 
   findAll(orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
-    return this.prismaService.book.findMany({
+    return this.prismaService.novel.findMany({
       orderBy: orderBy ? { [orderBy]: order } : undefined,
     });
   }
 
   findOne(id: number) {
-    return this.prismaService.book.findUnique({ where: { id }, include: { chapters: { select: { id: true, title: true, createdAt: true }, orderBy: { index: 'desc' } } } });
+    return this.prismaService.novel.findUnique({ where: { id }, include: { chapters: { select: { id: true, title: true, createdAt: true }, orderBy: { index: 'desc' } } } });
   }
 
   update(id: number, updateNovelDto: UpdateNovelDto) {
@@ -30,23 +30,23 @@ export class NovelService {
     return `This action removes a #${id} novel`;
   }
 
-  async follow(userId: number, bookId: number) {
+  async follow(userId: number, novelId: number) {
     try {
-      const [bookLibrary, book] = await this.prismaService.$transaction([
-        this.prismaService.bookLibrary.create({
+      const [novelLibrary, book] = await this.prismaService.$transaction([
+        this.prismaService.novelLibrary.create({
           data: {
             userId,
-            bookId,
+            novelId,
           },
         }),
-        this.prismaService.book.update({
-          where: { id: bookId },
+        this.prismaService.novel.update({
+          where: { id: novelId },
           data: {
             followCount: { increment: 1 },
           },
         }),
       ]);
-      return bookLibrary;
+      return novelLibrary;
     } catch (error) {
       if (error.code === 'P2002') {
         throw new ForbiddenException('You have already followed this book');
@@ -55,54 +55,65 @@ export class NovelService {
     }
   }
 
-  async unfollow(userId: number, bookId: number) {
-    const [bookLibrary, book] = await this.prismaService.$transaction([
-      this.prismaService.bookLibrary.delete({
+  async unfollow(userId: number, novelId: number) {
+    const [novelLibrary, book] = await this.prismaService.$transaction([
+      this.prismaService.novelLibrary.delete({
         where: {
-          userId_bookId: {
+          userId_novelId: {
             userId,
-            bookId,
+            novelId,
           },
         },
       }),
-      this.prismaService.book.update({
-        where: { id: bookId },
+      this.prismaService.novel.update({
+        where: { id: novelId },
         data: {
           followCount: { decrement: 1 },
         },
       }),
     ]);
-    return bookLibrary;
+    return novelLibrary;
   }
 
-  async isFollow(userId: number, bookId: number) {
-    const bookLibrary = await this.prismaService.bookLibrary.findUnique({
+  async isFollow(userId: number, novelId: number) {
+    const novelLibrary = await this.prismaService.novelLibrary.findUnique({
       where: {
-        userId_bookId: {
+        userId_novelId: {
           userId,
-          bookId,
+          novelId,
         },
       },
     });
-    return bookLibrary !== null;
+    return novelLibrary !== null;
   }
 
-  async findUserFollowingNovels(userId: number, orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
-    return this.prismaService.book.findMany({
+  async read(userId: number, novelId: number, chapterId: number) {
+    const readHistory = await this.prismaService.readHistory.findUnique({
       where: {
-        BookLibrary: {
-          some: {
-            userId,
-          },
-        },
-      },
-      orderBy: orderBy ? { [orderBy]: order } : undefined,
-      include: {
-        chapters: {
-          select: { id: true, title: true, createdAt: true },
-          orderBy: { index: 'desc' },
+        userId_novelId: {
+          userId,
+          novelId,
         },
       },
     });
+
+    if (!readHistory) {
+      return this.prismaService.readHistory.create({
+        data: {
+          novelId,
+          chapterId,
+          userId,
+        },
+      });
+    }
+
+    if (readHistory.chapterId < chapterId) {
+      return this.prismaService.readHistory.update({
+        where: { id: readHistory.id },
+        data: {
+          chapterId,
+        },
+      });
+    }
   }
 }

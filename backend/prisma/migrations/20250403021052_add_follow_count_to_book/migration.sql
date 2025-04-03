@@ -5,7 +5,7 @@ ALTER TABLE "Book" ADD COLUMN     "followCount" INTEGER NOT NULL DEFAULT 0;
 CREATE TABLE "BookLibrary" (
     "id" SERIAL NOT NULL,
     "userId" INTEGER NOT NULL,
-    "bookId" INTEGER NOT NULL,
+    "novelId" INTEGER NOT NULL,
 
     CONSTRAINT "BookLibrary_pkey" PRIMARY KEY ("id")
 );
@@ -23,10 +23,10 @@ CREATE TABLE "Comment" (
 );
 
 -- CreateIndex
-CREATE INDEX "BookLibrary_userId_bookId_idx" ON "BookLibrary"("userId", "bookId");
+CREATE INDEX "BookLibrary_userId_novelId_idx" ON "BookLibrary"("userId", "novelId");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "BookLibrary_userId_bookId_key" ON "BookLibrary"("userId", "bookId");
+CREATE UNIQUE INDEX "BookLibrary_userId_novelId_key" ON "BookLibrary"("userId", "novelId");
 
 -- CreateIndex
 CREATE INDEX "Comment_userId_idx" ON "Comment"("userId");

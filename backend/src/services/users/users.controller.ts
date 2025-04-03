@@ -8,6 +8,8 @@ import { UserProfileResponse, UserResponse } from 'src/services/users/dto/user.r
 import { UpdateProfileDto } from 'src/services/users/dto/update-profile.dto';
 import { RolesGuard } from 'src/shared/guard/role.guard';
 import { SessionResponseDto } from 'src/services/auth/dto/session.dto';
+import { AuthGuard } from 'src/services/auth/auth.guard';
+import { CurrentUser } from 'src/shared/decorator/current-user.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -43,6 +45,12 @@ export class UsersController {
     return plainToInstance(UserProfileResponse, this.userService.getProfile(session.id));
   }
 
+  @Get('@me/history')
+  @UseGuards(AuthGuard)
+  isFollow(@CurrentUser('id') userId: number) {
+    return this.userService.history(userId);
+  }
+
   @Roles(['USER'])
   @UseGuards(RolesGuard)
   @Patch('@me/profile')
@@ -50,5 +58,11 @@ export class UsersController {
     const session = getSession(req);
 
     return plainToInstance(UserProfileResponse, this.userService.updateProfile(id, session, updateProfileDto));
+  }
+
+  @Get('@me/following')
+  @UseGuards(AuthGuard)
+  findUserFollowingNovels(@CurrentUser('id') userId: number, @Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
+    return this.userService.findUserFollowingNovels(userId, orderBy, order);
   }
 }

@@ -29,7 +29,7 @@ function NovelPopular() {
       </div>
       <div className="relative z-10 py-8 px-4 max-w-7xl mx-auto">
         <h2 className="font-bold text-4xl text-white mb-6">Truyên mới nổi</h2>
-        <Carousel className="w-full h-[400px]">
+        <Carousel className="w-full h-[400px] overflow-hidden">
           <CarouselContent style={{ transform: `translateX(-${currentIndex * 100}%)`, transition: 'transform 0.5s ease-in-out' }}>
             {novels.map((novel, index) => (
               <CarouselItem key={index}>
