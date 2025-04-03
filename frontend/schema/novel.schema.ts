@@ -13,6 +13,7 @@ export type NovelDetail = {
   description: string;
   imageUrl: string;
   chapters: Chapter[];
+  followCount: number;
 };
 
 type Chapter = {

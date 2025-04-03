@@ -58,7 +58,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
                 state: 'authenticated',
               }))
             : setSession((prev) => ({ ...prev, state: 'unauthenticated', session: null })),
-        ),
+        )
+        .catch((error) => console.error(error)),
     [],
   );
 
@@ -69,6 +70,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   useInterval(() => {
     getSession();
   }, 300000);
+
+  
 
   return <SessionContext.Provider value={{ ...auth, refresh: getSession }}>{children}</SessionContext.Provider>;
 }

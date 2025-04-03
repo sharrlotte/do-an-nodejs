@@ -8,8 +8,8 @@ export function Navbar() {
   return (
     <Menubar className="w-full flex gap-4 justify-center">
       <MenubarMenu>
-        <MenubarTrigger className="hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md font-semibold flex items-center">
-          <List size={20} className="pr-2" /> Thể Loại
+        <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
+          <List size={24} className="pr-2" /> Thể Loại
         </MenubarTrigger>
         <MenubarContent className="items-center flex flex-row flex-wrap w-60 p-2">
           {categories.map((category, index) => (
@@ -21,8 +21,8 @@ export function Navbar() {
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className="hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md font-semibold flex items-center">
-          <Star size={20} className="pr-2" /> Xếp Loại
+        <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
+          <Star size={24} className="pr-2" /> Xếp Loại
         </MenubarTrigger>
         <MenubarContent className="items-center flex flex-row flex-wrap p-2">
           {ranking.map((rank, index) => (
@@ -34,20 +34,20 @@ export function Navbar() {
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className="hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md font-semibold flex items-center">
-          <Clock size={20} className="pr-2" /> <a href="/history">Lịch Sử</a>
+        <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
+          <Clock size={24} className="pr-2" /> <a href="/history">Lịch Sử</a>
         </MenubarTrigger>
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className="hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md font-semibold flex items-center">
-          <Bookmark size={20} className="pr-2" /> <a href="/follow">Theo Dõi</a>
+        <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
+          <Bookmark size={24} className="pr-2" /> <a href="/follow">Theo Dõi</a>
         </MenubarTrigger>
       </MenubarMenu>
 
       <MenubarMenu>
-        <MenubarTrigger className="hover:bg-accent hover:text-accent-foreground px-4 py-2 rounded-md font-semibold flex items-center">
-          <Users size={20} className="pr-2" /> <a href="https://www.facebook.com/CuuTruyenTranh">Fanpage</a>
+        <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
+          <Users size={24} className="pr-2" /> <a href="https://www.facebook.com/CuuTruyenTranh">Fanpage</a>
         </MenubarTrigger>
       </MenubarMenu>
     </Menubar>

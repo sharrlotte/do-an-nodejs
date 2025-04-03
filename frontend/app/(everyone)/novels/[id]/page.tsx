@@ -155,7 +155,7 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
           <div className="flex items-center gap-4 text-lg">
             <div className="flex items-center">
               <BookmarkPlus className="h-5 w-5" />
-              <span className="ml-1">23k</span>
+              <span className="ml-1">{novel.followCount}</span>
             </div>
             <div className="flex items-center">
               <BookOpen className="h-5 w-5" />

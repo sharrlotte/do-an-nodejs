@@ -41,7 +41,7 @@ model Comment {
     chapterId Int
 
     @@index([userId])
-    @@index([chapterId])  
+    @@index([chapterId])
 }
 
 model Book {
@@ -53,6 +53,7 @@ model Book {
     srcUpdated  DateTime? @db.Timestamp(6)
     updatedAt   DateTime? @db.Timestamp(6)
     createdAt   DateTime  @default(now()) @db.Timestamp(6)
+    followCount Int       @default(0)
     chapters    Chapter[]
 }
 

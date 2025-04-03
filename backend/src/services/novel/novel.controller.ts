@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Query } from '@nestjs/common';
 import { NovelService } from './novel.service';
 import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
+import { CurrentUser } from 'src/shared/decorator/current-user.decorator';
+import { AuthGuard } from 'src/services/auth/auth.guard';
 
 @Controller('novels')
 export class NovelController {
@@ -13,13 +15,13 @@ export class NovelController {
   }
 
   @Get()
-  findAll() {
-    return this.novelService.findAll();
+  findAll(@Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
+    return this.novelService.findAll(orderBy, order);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.novelService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.novelService.findOne(id);
   }
 
   @Patch(':id')
@@ -28,7 +30,25 @@ export class NovelController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.novelService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.novelService.remove(id);
+  }
+
+  @Post(':id/follow')
+  @UseGuards(AuthGuard)
+  follow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
+    return this.novelService.follow(userId, bookId);
+  }
+
+  @Delete(':id/follow')
+  @UseGuards(AuthGuard)
+  unfollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
+    return this.novelService.unfollow(userId, bookId);
+  }
+
+  @Get(':id/follow')
+  @UseGuards(AuthGuard)
+  isFollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) bookId: number) {
+    return this.novelService.isFollow(userId, bookId);
   }
 }

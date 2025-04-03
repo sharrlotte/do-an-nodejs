@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Rubik as Font } from 'next/font/google';
+import { Lexend_Deca as Font } from 'next/font/google';
 import QueryProvider from './query-provider';
 
 import { Toaster } from '@/components/ui/toaster';
