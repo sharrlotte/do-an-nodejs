@@ -9,4 +9,16 @@ const api = axios.create({
   },
 });
 
+api.interceptors.request.use((config) => {
+  if (typeof window === 'undefined') return config;
+
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    config.headers.Authorization = `${token}`;
+  }
+
+  return config;
+});
+
 export default api;

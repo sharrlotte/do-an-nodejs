@@ -2,8 +2,8 @@
 
 import api from '@/api/api';
 import { Session } from '@/schema/user.schema';
-import React, { ReactNode, useCallback, useLayoutEffect, useState } from 'react';
-import { useInterval } from 'usehooks-ts';
+import React, { ReactNode, useCallback, useEffect, useState } from 'react';
+import { useInterval, useLocalStorage } from 'usehooks-ts';
 
 export type SessionState = 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -40,6 +40,9 @@ export function useSession(): SessionContextType & { refresh: () => void } {
 }
 
 export function SessionProvider({ children }: { children: ReactNode }) {
+  const [token] = useLocalStorage('token', '', {
+    deserializer: (value) => value,
+  });
   const [auth, setSession] = useState<SessionContextType>({
     state: 'loading',
     session: null,
@@ -63,15 +66,15 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [],
   );
 
-  useLayoutEffect(() => {
-    getSession();
-  }, [getSession]);
+  useEffect(() => {
+    if (token) {
+      getSession();
+    }
+  }, [getSession, token]);
 
   useInterval(() => {
     getSession();
   }, 300000);
-
-  
 
   return <SessionContext.Provider value={{ ...auth, refresh: getSession }}>{children}</SessionContext.Provider>;
 }

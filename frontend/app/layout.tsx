@@ -9,6 +9,7 @@ import './globals.css';
 import { SessionProvider } from '@/context/SessionContext';
 import VerifyAccountChecker from '@/app/VerifyAccountCheck';
 import { cn } from '@/lib/utils';
+import TokenExtractor from '@/app/TokenExtractor';
 
 const inter = Font({ subsets: ['latin'], weight: '400' });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           <QueryProvider>{children}</QueryProvider>
           <VerifyAccountChecker />
         </SessionProvider>
+        <TokenExtractor />
       </body>
     </html>
   );
