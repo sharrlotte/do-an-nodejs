@@ -29,7 +29,7 @@ export class GithubOauthController {
     const { accessToken } = this.jwtAuthService.login(user);
     // TODO: Turn on secure in production env
     // TODO: Redirect to last page
-    res.cookie('jwt', accessToken, { httpOnly: true, secure: false });
+    res.cookie('jwt', accessToken, { httpOnly: true, secure: false, sameSite: 'none' });
 
     return res.redirect(`${this.configService.get('url.frontend')}`);
   }
