@@ -41,7 +41,7 @@ const tabs: Tab = [
     {
       icon: <Sparkles className="w-5 h-5" />,
       action: (
-        <Link className="w-full" href="/my-order">
+        <Link className="w-full" href="/gacha">
           Gacha Truyện
         </Link>
       ),

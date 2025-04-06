@@ -24,6 +24,11 @@ export class NovelController {
     return this.novelService.findAll(orderBy, order);
   }
 
+  @Get('random')
+  findRandom() {
+    return this.novelService.random();
+  }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.novelService.findOne(id);

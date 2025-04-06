@@ -3,6 +3,7 @@ import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
 import { PrismaService } from 'src/services/prisma/prisma.service';
 import { ForbiddenException } from '@nestjs/common';
+import { Novel } from '@prisma/client';
 
 @Injectable()
 export class NovelService {
@@ -10,6 +11,38 @@ export class NovelService {
 
   create(createNovelDto: CreateNovelDto) {
     return 'This action adds a new novel';
+  }
+
+  random() {
+    return this.prismaService.$queryRawUnsafe<Novel>(`
+      SELECT 
+        "Novel".id,
+        "Novel".title,
+        "Novel".description,
+        "Novel"."imageUrl",
+        "Novel".src,
+        "Novel"."srcUpdated",
+        "Novel"."updatedAt",
+        "Novel"."createdAt",
+        "Novel"."followCount",
+        "Novel"."commentCount",
+        "Novel"."chapterCount",
+        COALESCE(
+          json_agg(
+            json_build_object(
+              'id', "Chapter".id,
+              'title', "Chapter".title,
+              'createdAt', "Chapter"."createdAt"
+            ) ORDER BY "Chapter".index DESC
+          ) FILTER (WHERE "Chapter".id IS NOT NULL),
+          '[]'
+        )::jsonb as chapters
+      FROM "Novel"
+      LEFT JOIN "Chapter" ON "Chapter"."novelId" = "Novel".id
+      GROUP BY "Novel".id
+      ORDER BY random()
+      LIMIT 1;
+    `);
   }
 
   findAll(orderBy?: 'chapterCount' | 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {

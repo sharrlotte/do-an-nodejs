@@ -38,7 +38,7 @@ export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'c
   );
 }
 
-export function NovelCard({ novel }: { novel: Novel }) {
+function NovelCard({ novel }: { novel: Novel }) {
   const { isFollowing, isLoading, toggleFollow } = useFollow(novel.id);
 
   const handleFollowClick = (e: React.MouseEvent) => {

@@ -28,7 +28,7 @@ export default function Page() {
   return (
     <div className="space-y-2 h-full flex flex-col p-4">
       <Header />
-      <Tabs defaultValue="update" className="h-full overflow-hidden flex gap-2 flex-col items-start">
+      <Tabs defaultValue="follow" className="h-full overflow-hidden flex gap-2 flex-col items-start">
         <TabsList>
           <TabsTrigger value="follow">Theo dõi</TabsTrigger>
           <TabsTrigger value="update">Mới cập nhật </TabsTrigger>
