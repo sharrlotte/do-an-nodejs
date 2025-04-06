@@ -18,6 +18,19 @@ export class NovelService {
     });
   }
 
+  search(q: string) {
+    return this.prismaService.novel.findMany({
+      where: {
+        title: {
+          contains: q,
+        },
+      },
+      orderBy: {
+        followCount: 'desc',
+      },
+    });
+  }
+
   findOne(id: number) {
     return this.prismaService.novel.findUnique({ where: { id }, include: { chapters: { select: { id: true, title: true, createdAt: true }, orderBy: { index: 'desc' } } } });
   }

@@ -6,6 +6,7 @@ import UserSheet from '@/app/UserSheet';
 import { BellIcon } from 'lucide-react';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Navbar } from './navbar';
+import SearchBar from '@/app/SearchBar';
 
 function Header() {
   return (
@@ -22,7 +23,7 @@ function Header() {
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
             </svg>
           </div>
-          <input className="w-full h-10 p-2 ps-10 text-sm rounded-lg overflow-hidden text-gray-900 border border-gray-300 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Bạn đang tìm kiếm những gì ?" required />
+          <SearchBar />
         </div>
         <div className="flex gap-2 justify-center items-center">
           <BellIcon className="w-6 h-6" />

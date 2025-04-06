@@ -14,6 +14,11 @@ export class NovelController {
     return this.novelService.create(createNovelDto);
   }
 
+  @Get('search')
+  search(@Query('q') q: string) {
+    return this.novelService.search(q);
+  }
+
   @Get()
   findAll(@Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
     return this.novelService.findAll(orderBy, order);
