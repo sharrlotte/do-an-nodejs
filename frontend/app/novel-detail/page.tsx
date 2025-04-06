@@ -60,8 +60,8 @@ const NovelDetail = ({ novel }: { novel: Novel }) => {
   const categories = novel.catagoryNovel.split(', ');
 
   return (
-    <div className="flex flex-col md:flex-row gap-6 p-4 bg-black text-white overflow-scroll">
-      <div className="absolute inset-0 overflow-hidden">
+    <div className="flex flex-col md:flex-row gap-6 p-4 bg-black text-white relative overflow-y-auto">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <Image src={novel.imgurlNovel || '/placeholder.svg'} alt="background" fill className="object-cover opacity-20" />
       </div>
       {/* Cover Image */}
@@ -184,12 +184,12 @@ export default function NovelPage() {
   const [activeTab, setActiveTab] = useState('chapters');
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 overflow-x-hidden overflow-y-auto">
       {/* Novel Detail Section */}
       <NovelDetail novel={sampleNovel} />
 
       {/* Tabs Section */}
-      <div className="max-w-7xl mx-auto mt-4 p-4">
+      <div className="max-w-7xl mx-auto mt-4 p-4 overflow-y-auto">
         <Tabs defaultValue="chapters" onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-gray-200">
             <TabsTrigger value="chapters" className="font-bold">
