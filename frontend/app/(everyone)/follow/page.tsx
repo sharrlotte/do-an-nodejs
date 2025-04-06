@@ -5,6 +5,7 @@ import Header from '@/app/Header';
 import Loading from '@/app/loading';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useSession } from '@/context/SessionContext';
+import { getRelativeTime } from '@/lib/utils';
 import { ChapterUpdate } from '@/schema/chapter.schema';
 import { FollowingNovel } from '@/schema/novel.schema';
 import { useQuery } from '@tanstack/react-query';
@@ -101,14 +102,16 @@ function Update() {
             const read = following.index <= (following.novel.ReadHistory?.[0]?.chapter.index ?? -1);
 
             return (
-              <div key={following.id} className="flex gap-2 rounded-lg bg-zinc-300">
-                <Link href={`/novels/${following.novel.id}`} className={`flex p-2 gap-4 justify-between ${read ? 'opacity-70 text-muted-foreground' : ''}`}>
+              <div key={following.id} className={`flex gap-2 rounded-lg bg-zinc-300 ${read ? 'opacity-50 text-muted-foreground' : ''}`}>
+                <Link href={`/novels/${following.novel.id}`} className={`flex p-2 gap-4 justify-between`}>
                   <Image src={following.novel.imageUrl} alt={following.title} width={30} height={40} className="object-cover" />
                   {following.novel.title}
                 </Link>
                 <Link href={`/novels/${following.novel.id}/chapters/${following.id}`} className={`flex w-full p-2 gap-4 justify-between ${read ? 'opacity-70 text-muted-foreground' : ''}`}>
                   <span>{following.title}</span>
-                  <span>{new Date(following.createdAt).toLocaleDateString()}</span>
+                  <span>
+                    {read ? 'Đã đọc' : ''} {getRelativeTime(new Date(following.createdAt))}
+                  </span>
                 </Link>
               </div>
             );

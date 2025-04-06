@@ -1,9 +1,26 @@
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from '@/components/ui/menubar';
 import { List, Star, Clock, Bookmark, Users } from 'lucide-react';
+import Link from 'next/link';
 
 export function Navbar() {
   const categories = ['Romcom', 'Fantasy', 'Shojo', 'Shonen', 'Gyoro', 'Horror', 'Adventure'];
-  const ranking = ['Top View', 'Top Rated', 'Newest', 'Trending'];
+  const ranking = [
+    {
+      title: 'Mới nhất',
+      orderBy: 'createdAt',
+      order: 'desc',
+    },
+    {
+      title: 'Yêu thích nhất',
+      orderBy: 'followCount',
+      order: 'desc',
+    },
+    {
+      title: 'Dài nhất',
+      orderBy: 'chapterCount',
+      order: 'desc',
+    },
+  ];
 
   return (
     <Menubar className="w-full flex gap-4 justify-center overflow-x-auto">
@@ -19,7 +36,6 @@ export function Navbar() {
           ))}
         </MenubarContent>
       </MenubarMenu>
-
       <MenubarMenu>
         <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
           <Star size={24} className="pr-2" /> Xếp Loại
@@ -27,7 +43,7 @@ export function Navbar() {
         <MenubarContent className="items-center flex flex-row flex-wrap p-2">
           {ranking.map((rank, index) => (
             <MenubarItem key={index} className="px-3 py-1">
-              {rank}
+              <Link href={`/novels?order=${rank.order}&orderBy=${rank.orderBy}`}>{rank.title}</Link>
             </MenubarItem>
           ))}
         </MenubarContent>

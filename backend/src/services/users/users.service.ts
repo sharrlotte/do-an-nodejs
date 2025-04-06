@@ -156,9 +156,14 @@ export class UsersService {
           },
         },
       },
-      orderBy: {
-        index: 'desc',
-      },
+      orderBy: [
+        {
+          index: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
     });
   }
 

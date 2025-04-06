@@ -20,7 +20,7 @@ export class NovelController {
   }
 
   @Get()
-  findAll(@Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
+  findAll(@Query('orderBy') orderBy?: 'chapterCount' | 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
     return this.novelService.findAll(orderBy, order);
   }
 

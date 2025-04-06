@@ -32,7 +32,7 @@ export default async function Page({ params }: Props) {
         <Tabs defaultValue="chapters" className="w-full">
           <TabsList className="grid w-full grid-cols-4 bg-gray-200">
             <TabsTrigger value="chapters" className="font-bold">
-              Chương
+              Chương ({novel.chapterCount})
             </TabsTrigger>
             <TabsTrigger value="comments">Bình luận ({novel.commentCount})</TabsTrigger>
             <TabsTrigger value="art">Ảnh</TabsTrigger>

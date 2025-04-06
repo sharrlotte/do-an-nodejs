@@ -5,6 +5,7 @@ export type Novel = {
   description: string;
   imageUrl: string;
   commentCount: number;
+  chapterCount: number;
 };
 
 export type FollowingNovel = {
@@ -14,6 +15,7 @@ export type FollowingNovel = {
   description: string;
   imageUrl: string;
   commentCount: number;
+  chapterCount: number;
   chapters: [Chapter];
 };
 
@@ -26,6 +28,7 @@ export type NovelDetail = {
   chapters: Chapter[];
   followCount: number;
   commentCount: number;
+  chapterCount: number;
 };
 
 type Chapter = {

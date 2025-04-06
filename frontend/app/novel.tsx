@@ -12,7 +12,7 @@ import { cn } from '@/lib/utils';
 import { BookmarkIcon } from 'lucide-react';
 import Loading from '@/app/loading';
 
-export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'createdAt' | 'followCount'; order?: 'asc' | 'desc' }) {
+export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'chapterCount' | 'createdAt' | 'followCount'; order?: 'asc' | 'desc' }) {
   const { data: novels } = useNovels(orderBy, order);
 
   if (!novels) return <></>;
@@ -38,7 +38,7 @@ export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'c
   );
 }
 
-function NovelCard({ novel }: { novel: Novel }) {
+export function NovelCard({ novel }: { novel: Novel }) {
   const { isFollowing, isLoading, toggleFollow } = useFollow(novel.id);
 
   const handleFollowClick = (e: React.MouseEvent) => {

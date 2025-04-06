@@ -12,7 +12,7 @@ export class NovelService {
     return 'This action adds a new novel';
   }
 
-  findAll(orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
+  findAll(orderBy?: 'chapterCount' | 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
     return this.prismaService.novel.findMany({
       orderBy: orderBy ? { [orderBy]: order } : undefined,
     });
