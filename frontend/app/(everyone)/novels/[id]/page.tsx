@@ -102,7 +102,7 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
       </div>
       {/* Cover Image */}
       <div className="relative container mx-auto flex flex-col md:flex-row gap-6">
-        <Link href={`/`} className="flex md:flex-row items-center  px-2 py-1 text-white rounded-lg bg-white/40 backdrop-blur-sm sm:absolute right-1 top-1">
+        <Link href={`/`} className="flex md:flex-row items-center px-2 py-1 text-white rounded-lg bg-white/40 backdrop-blur-sm sm:absolute right-1 top-1">
           <ChevronLeftIcon size={20} /> Quay về trang chủ
         </Link>
         <div className="flex-shrink-0 w-full md:w-64">
