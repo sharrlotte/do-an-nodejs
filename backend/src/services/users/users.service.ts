@@ -12,10 +12,10 @@ type UserWithAuthoritiesAndRoles = Prisma.UserGetPayload<{}> & { roles: string[]
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prismaService: PrismaService) {}
 
   async find(providerId: string, provider: AuthProvider): Promise<UserWithAuthoritiesAndRoles | null> {
-    let user = await this.prisma.account
+    let user = await this.prismaService.account
       .findFirst({
         where: {
           provider,
@@ -56,7 +56,7 @@ export class UsersService {
   }
 
   async history(userId: number) {
-    return this.prisma.readHistory.findMany({
+    return this.prismaService.readHistory.findMany({
       where: {
         userId,
       },
@@ -73,9 +73,9 @@ export class UsersService {
   }
 
   async create(providerId: string, provider: AuthProvider, { username, profileUrl }: { username: string; profileUrl: string }): Promise<UserWithAuthoritiesAndRoles> {
-    const role = await this.prisma.role.findFirstOrThrow({ where: { name: 'USER' } });
+    const role = await this.prismaService.role.findFirstOrThrow({ where: { name: 'USER' } });
 
-    const user = await this.prisma.user.create({
+    const user = await this.prismaService.user.create({
       data: {
         username,
         about: '',
@@ -101,7 +101,7 @@ export class UsersService {
   }
 
   async findUserFollowingNovels(userId: number, orderBy?: 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
-    return this.prisma.novel.findMany({
+    return this.prismaService.novel.findMany({
       where: {
         NovelLibrary: {
           some: {
@@ -120,8 +120,50 @@ export class UsersService {
     });
   }
 
+  async findUserUpdateChapter(userId: number) {
+    return this.prismaService.chapter.findMany({
+      where: {
+        novel: {
+          NovelLibrary: {
+            some: {
+              userId,
+            },
+          },
+        },
+      },
+      include: {
+        novel: {
+          select: {
+            id: true,
+            title: true,
+            imageUrl: true,
+            ReadHistory: {
+              take: 1,
+              where: {
+                userId,
+              },
+              orderBy: {
+                createdAt: 'desc',
+              },
+              include: {
+                chapter: {
+                  select: {
+                    index: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      orderBy: {
+        index: 'desc',
+      },
+    });
+  }
+
   async get(id: number): Promise<User> {
-    const user = await this.prisma.user.findFirst({ where: { id } });
+    const user = await this.prismaService.user.findFirst({ where: { id } });
 
     if (!user) {
       throw new NotFound('id');
@@ -131,7 +173,7 @@ export class UsersService {
   }
 
   async getProfile(id: number): Promise<UserProfileResponse> {
-    const user = await this.prisma.user.findFirst({ where: { id } });
+    const user = await this.prismaService.user.findFirst({ where: { id } });
 
     if (!user) {
       throw new NotFound('id');
@@ -145,7 +187,7 @@ export class UsersService {
       throw new ForbiddenException();
     }
 
-    const user = await this.prisma.user.update({ where: { id }, data: updateProfileDto });
+    const user = await this.prismaService.user.update({ where: { id }, data: updateProfileDto });
 
     if (!user) {
       throw new NotFound('id');

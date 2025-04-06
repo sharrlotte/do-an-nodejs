@@ -24,7 +24,7 @@ export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'c
       }}
       className="w-full mx-auto"
     >
-      <div className="font-semibold text-blue-400 p-2">{text}</div>
+      <div className="font-semibold text-blue-400 py-2">{text}</div>
       <CarouselContent>
         {novels?.map((novel, index) => (
           <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 xl:basis-1/4 relative">

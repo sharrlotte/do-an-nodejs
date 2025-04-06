@@ -3,8 +3,6 @@ import React from 'react';
 import Link from 'next/link';
 import Navigation from '@/app/Navigation';
 import UserSheet from '@/app/UserSheet';
-import { BellIcon } from 'lucide-react';
-import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { Navbar } from './navbar';
 import SearchBar from '@/app/SearchBar';
 
@@ -16,7 +14,6 @@ function Header() {
           Novel Scan
         </Link>
         <Navigation />
-
         <div className="hidden sm:flex w-full items-center gap-2">
           <div className="absolute w-full flex items-center ps-3 pointer-events-none">
             <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -26,8 +23,6 @@ function Header() {
           <SearchBar />
         </div>
         <div className="flex gap-2 justify-center items-center">
-          <BellIcon className="w-6 h-6" />
-          <EnvelopeIcon className="w-6 h-6" />
           <UserSheet />
         </div>
       </div>

@@ -76,7 +76,7 @@ export class TasksService implements OnModuleInit {
               },
             });
 
-            if (exists) {
+            if (exists && exists.index === index) {
               continue;
             }
 
@@ -88,8 +88,11 @@ export class TasksService implements OnModuleInit {
             const content = await Promise.all(paragraphs.map((p) => p.evaluate((el) => el.textContent?.trim() || '')));
             // Translate the content before saving to database
             const translated = await this.geminiService.translateChapter(chapterLink.title, content);
-            const chapter = await this.prismaService.chapter.create({
-              data: {
+            const chapter = await this.prismaService.chapter.upsert({
+              where: {
+                src: chapterLink.src,
+              },
+              create: {
                 title: translated.title,
                 content: translated.content,
                 src: chapterLink.src,
@@ -99,6 +102,12 @@ export class TasksService implements OnModuleInit {
                     id: chapterLink.id,
                   },
                 },
+              },
+              update: {
+                title: translated.title,
+                content: translated.content,
+                src: chapterLink.src,
+                index,
               },
             });
 
@@ -143,6 +152,7 @@ export class TasksService implements OnModuleInit {
         const exists = await this.prismaService.novel.findUnique({
           where: { src },
         });
+
         if (exists) {
           continue;
         }

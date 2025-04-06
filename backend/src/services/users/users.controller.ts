@@ -65,4 +65,10 @@ export class UsersController {
   findUserFollowingNovels(@CurrentUser('id') userId: number, @Query('orderBy') orderBy?: 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
     return this.userService.findUserFollowingNovels(userId, orderBy, order);
   }
+
+  @Get('@me/update')
+  @UseGuards(AuthGuard)
+  findUserUpdateChapter(@CurrentUser('id') userId: number) {
+    return this.userService.findUserUpdateChapter(userId);
+  }
 }
