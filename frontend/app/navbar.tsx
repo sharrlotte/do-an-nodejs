@@ -23,7 +23,7 @@ export function Navbar() {
   ];
 
   return (
-    <Menubar className="w-full flex gap-4 justify-center overflow-x-auto">
+    <Menubar className="w-full flex gap-4 justify-center overflow-x-auto h-auto">
       <MenubarMenu>
         <MenubarTrigger className="hover:bg-accent text-accent hover:text-accent-foreground px-4 py-2 rounded-md flex items-center">
           <List size={24} className="pr-2" /> Thể Loại

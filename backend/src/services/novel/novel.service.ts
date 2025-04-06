@@ -56,6 +56,7 @@ export class NovelService {
       where: {
         title: {
           contains: q,
+          mode: 'insensitive',
         },
       },
       orderBy: {
