@@ -3,18 +3,30 @@
 import api from '@/api/api';
 import Header from '@/app/Header';
 import Loading from '@/app/loading';
+import { useSession } from '@/context/SessionContext';
 import { FollowingNovel } from '@/schema/novel.schema';
 import { useQuery } from '@tanstack/react-query';
+import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Page() {
+  const { state } = useSession();
+
   const { data, isLoading } = useQuery({
     queryKey: ['following'],
     queryFn: () => api.get('/users/@me/following').then((result) => result.data as FollowingNovel[]),
+    enabled: state === 'authenticated',
   });
 
-  console.log(data);
+  if (state === 'unauthenticated') {
+    return (
+      <Link className="flex " href="/account/login">
+        <LogIn />
+        Dăng nhập
+      </Link>
+    );
+  }
 
   return (
     <div className="space-y-2 h-full flex flex-col p-4">

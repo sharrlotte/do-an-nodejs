@@ -3,16 +3,30 @@
 import api from '@/api/api';
 import Header from '@/app/Header';
 import Loading from '@/app/loading';
+import { useSession } from '@/context/SessionContext';
 import { ReadHistory } from '@/schema/read-historty.schema';
 import { useQuery } from '@tanstack/react-query';
+import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
 export default function Page() {
+  const { state } = useSession();
+
   const { data, isLoading } = useQuery({
     queryKey: ['read-history'],
     queryFn: () => api.get('/users/@me/history').then((result) => result.data as ReadHistory[]),
+    enabled: state === 'authenticated',
   });
+
+  if (state === 'unauthenticated') {
+    return (
+      <Link className="flex" href="/account/login">
+        <LogIn />
+        Dăng nhập
+      </Link>
+    );
+  }
 
   return (
     <div className="space-y-2 h-full flex flex-col p-4">
