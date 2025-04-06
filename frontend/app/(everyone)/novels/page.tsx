@@ -2,7 +2,7 @@
 
 import Header from '@/app/Header';
 import Loading from '@/app/loading';
-import { NovelCard, NovelList } from '@/app/novel';
+import { NovelCard } from '@/app/novel';
 import useNovels from '@/hook/use-novels';
 import { useSearchParams } from 'next/navigation';
 
