@@ -3,6 +3,7 @@
 import api from '@/api/api';
 import Header from '@/app/Header';
 import Loading from '@/app/loading';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import useFollow from '@/hook/use-follow';
 import { cn } from '@/lib/utils';
@@ -63,7 +64,12 @@ function NovelCard({ novel }: { novel: NovelDetail }) {
           <h2 className="font-medium">{novel.title}</h2>
           <div className="flex flex-col p-0">
             <div className="text-sm text-muted-foreground line-clamp-3 text-ellipsis">{novel.description}</div>
-            <div className="text-muted-foreground">Thể loại: {novel.categories}</div>
+            <div className="text-sm text-muted-foreground">
+              Thể loại:
+              {novel.categories.map((c) => (
+                <Badge key={c}>{c}</Badge>
+              ))}
+            </div>
             <div className="text-muted-foreground">Số chương: {novel.chapterCount}</div>
           </div>
         </div>

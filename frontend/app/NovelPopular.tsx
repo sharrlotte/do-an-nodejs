@@ -1,4 +1,5 @@
 'use client';
+import { Badge } from '@/components/ui/badge';
 import { CardContent } from '@/components/ui/card';
 import { Card } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -77,7 +78,12 @@ function NovelPopularCard({ novel }: { novel: Novel }) {
           {/* Thông tin truyện */}
           <div className="flex flex-col flex-grow">
             <h3 className="text-xl font-bold text-white line-clamp-2 mb-2">{novel.title}</h3>
-            <div className="text-gray-300 text-sm mb-2">Thể loại: {novel.categories}</div>
+            <div className="text-sm text-muted-foreground">
+              Thể loại:
+              {novel.categories.map((c) => (
+                <Badge key={c}>{c}</Badge>
+              ))}
+            </div>
             <p className="text-gray-200 text-sm line-clamp-4 mb-4">{novel.description}</p>
           </div>
         </CardContent>

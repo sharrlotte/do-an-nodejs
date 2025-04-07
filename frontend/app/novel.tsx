@@ -11,6 +11,7 @@ import useFollow from '@/hook/use-follow';
 import { cn } from '@/lib/utils';
 import { BookmarkIcon } from 'lucide-react';
 import Loading from '@/app/loading';
+import { Badge } from '@/components/ui/badge';
 
 export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'chapterCount' | 'createdAt' | 'followCount'; order?: 'asc' | 'desc' }) {
   const { data: novels } = useNovels('', [], orderBy, order);
@@ -60,7 +61,12 @@ export function NovelCard({ novel }: { novel: Novel }) {
           <CardTitle className="font-medium text-lg">{novel.title}</CardTitle>
           <CardContent className="flex flex-col p-0">
             <div className="text-xs text-muted-foreground line-clamp-3 text-ellipsis">{novel.description}</div>
-            <div className="text-sm text-muted-foreground">Thể loại: {novel.categories}</div>
+            <div className="text-sm text-muted-foreground">
+              Thể loại:
+              {novel.categories.map((c) => (
+                <Badge key={c}>{c}</Badge>
+              ))}
+            </div>
           </CardContent>
         </div>
       </Link>
