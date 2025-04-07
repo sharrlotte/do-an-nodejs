@@ -18,6 +18,7 @@ import { GeminiModule } from 'src/services/gemini/gemini.module';
 import { NovelModule } from './services/novel/novel.module';
 import { ChapterModule } from './services/chapter/chapter.module';
 import { CommentModule } from './services/comment/comment.module';
+import { CategoryModule } from './services/category/category.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { CommentModule } from './services/comment/comment.module';
     NovelModule,
     ChapterModule,
     CommentModule,
+    CategoryModule,
   ],
   providers: [CloudinaryService],
 })

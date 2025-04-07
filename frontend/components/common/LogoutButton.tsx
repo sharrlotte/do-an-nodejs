@@ -2,7 +2,7 @@
 
 import { useSession } from '@/context/SessionContext';
 
-export default function LogoutButton() {
+export default function LogoutButton({ children }: { children?: React.ReactNode }) {
   const { refresh } = useSession();
   return (
     <button
@@ -12,7 +12,7 @@ export default function LogoutButton() {
         refresh();
       }}
     >
-      Đăng xuất
+      {children ?? 'Đăng xuất'}
     </button>
   );
 }

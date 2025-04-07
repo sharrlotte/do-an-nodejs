@@ -1,3 +1,4 @@
+import { NovelCategory } from './../../../node_modules/.pnpm/@prisma+client@5.13.0_prisma@5.22.0/node_modules/.prisma/client/index.d';
 import { Injectable } from '@nestjs/common';
 import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
@@ -36,19 +37,57 @@ export class NovelService {
             ) ORDER BY "Chapter".index DESC
           ) FILTER (WHERE "Chapter".id IS NOT NULL),
           '[]'
-        )::jsonb as chapters
+        )::jsonb as chapters,
+        COALESCE(
+          json_agg(DISTINCT "Category".name) FILTER (WHERE "Category".name IS NOT NULL),
+          '[]'
+        )::jsonb as categories
       FROM "Novel"
       LEFT JOIN "Chapter" ON "Chapter"."novelId" = "Novel".id
+      LEFT JOIN "NovelCategory" ON "NovelCategory"."novelId" = "Novel".id
+      LEFT JOIN "Category" ON "Category".id = "NovelCategory"."categoryId"
       GROUP BY "Novel".id
       ORDER BY random()
       LIMIT 1;
     `);
   }
 
-  findAll(orderBy?: 'chapterCount' | 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
-    return this.prismaService.novel.findMany({
-      orderBy: orderBy ? { [orderBy]: order } : undefined,
-    });
+  findAll(q?: string, category?: string[], orderBy?: 'chapterCount' | 'createdAt' | 'followCount', order: 'asc' | 'desc' = 'desc') {
+    return this.prismaService.novel
+      .findMany({
+        where: {
+          title: q
+            ? {
+                contains: q,
+                mode: 'insensitive',
+              }
+            : undefined,
+          NovelCategory: category
+            ? {
+                some: {
+                  category: {
+                    name: {
+                      in: category,
+                    },
+                  },
+                },
+              }
+            : undefined,
+        },
+        orderBy: orderBy ? { [orderBy]: order } : undefined,
+        include: {
+          NovelCategory: {
+            select: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      .then((res) => res.map((item) => ({ ...item, categories: item.NovelCategory.map((i) => i.category.name) })));
   }
 
   search(q: string) {
@@ -62,11 +101,41 @@ export class NovelService {
       orderBy: {
         followCount: 'desc',
       },
+      include: {
+        NovelCategory: {
+          select: {
+            category: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 
   findOne(id: number) {
-    return this.prismaService.novel.findUnique({ where: { id }, include: { chapters: { select: { id: true, title: true, createdAt: true }, orderBy: { index: 'desc' } } } });
+    return this.prismaService.novel
+      .findUniqueOrThrow({
+        where: { id },
+        include: {
+          chapters: {
+            select: { id: true, title: true, createdAt: true },
+            orderBy: { index: 'desc' },
+          },
+          NovelCategory: {
+            select: {
+              category: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      .then((item) => ({ ...item, categories: item.NovelCategory.map((i) => i.category.name) }));
   }
 
   update(id: number, updateNovelDto: UpdateNovelDto) {
@@ -122,16 +191,17 @@ export class NovelService {
     return novelLibrary;
   }
 
-  async isFollow(userId: number, novelId: number) {
-    const novelLibrary = await this.prismaService.novelLibrary.findUnique({
+  async isFollow(userId: number, novelId: number[]) {
+    const novelLibrary = await this.prismaService.novelLibrary.findMany({
       where: {
-        userId_novelId: {
-          userId,
-          novelId,
+        userId,
+        novelId: {
+          in: novelId,
         },
       },
     });
-    return novelLibrary !== null;
+
+    return novelLibrary.map((r) => r.novelId);
   }
 
   async read(userId: number, novelId: number, chapterId: number) {

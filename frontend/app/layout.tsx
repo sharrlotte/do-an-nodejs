@@ -11,7 +11,8 @@ import VerifyAccountChecker from '@/app/VerifyAccountCheck';
 import { cn } from '@/lib/utils';
 import TokenExtractor from '@/app/TokenExtractor';
 import { Suspense } from 'react';
-
+import BatcherComponent from '@/app/Batcher';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 const inter = Font({ subsets: ['latin'], weight: '400' });
 
 export const metadata: Metadata = {
@@ -30,11 +31,14 @@ export default function RootLayout({
         <Toaster />
         <NextTopLoader height={2} showSpinner={false} color="blue" />
         <SessionProvider>
-          <QueryProvider>{children}</QueryProvider>
+          <QueryProvider>
+            <NuqsAdapter>{children}</NuqsAdapter>
+          </QueryProvider>
           <VerifyAccountChecker />
         </SessionProvider>
         <Suspense>
           <TokenExtractor />
+          <BatcherComponent />
         </Suspense>
       </body>
     </html>

@@ -1,6 +1,7 @@
 import { useSession } from '@/context/SessionContext';
 import api from '@/api/api';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Batcher } from '@/lib/batcher';
 
 export default function useFollow(novelId: number) {
   const queryClient = useQueryClient();
@@ -10,8 +11,7 @@ export default function useFollow(novelId: number) {
   const { data: isFollowing = false } = useQuery({
     queryKey,
     queryFn: async () => {
-      const response = await api.get(`/novels/${novelId}/follow`);
-      return response.data;
+      return Batcher.follow.get(novelId);
     },
     retry: 0,
     enabled: state === 'authenticated',

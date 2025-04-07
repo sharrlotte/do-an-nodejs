@@ -9,6 +9,12 @@ import { AuthGuard } from 'src/services/auth/auth.guard';
 export class NovelController {
   constructor(private readonly novelService: NovelService) {}
 
+  @Post('isFollow')
+  @UseGuards(AuthGuard)
+  isFollow(@CurrentUser('id') userId: number, @Body() novelId: number[]) {
+    return this.novelService.isFollow(userId, novelId);
+  }
+
   @Post()
   create(@Body() createNovelDto: CreateNovelDto) {
     return this.novelService.create(createNovelDto);
@@ -20,8 +26,8 @@ export class NovelController {
   }
 
   @Get()
-  findAll(@Query('orderBy') orderBy?: 'chapterCount' | 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
-    return this.novelService.findAll(orderBy, order);
+  findAll(@Query('q') q: string, @Query('category') category?: string[], @Query('orderBy') orderBy?: 'chapterCount' | 'createdAt' | 'followCount', @Query('order') order: 'asc' | 'desc' = 'desc') {
+    return this.novelService.findAll(q, category, orderBy, order);
   }
 
   @Get('random')
@@ -54,12 +60,6 @@ export class NovelController {
   @UseGuards(AuthGuard)
   unfollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number) {
     return this.novelService.unfollow(userId, novelId);
-  }
-
-  @Get(':id/follow')
-  @UseGuards(AuthGuard)
-  isFollow(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number) {
-    return this.novelService.isFollow(userId, novelId);
   }
 
   @Get(':id/chapters/:chapterId/read')

@@ -84,6 +84,8 @@ model Novel {
 
     NovelLibrary NovelLibrary[]
     ReadHistory  ReadHistory[]
+
+    NovelCategory NovelCategory[]
 }
 
 model Chapter {
@@ -102,6 +104,25 @@ model Chapter {
 
     @@index([novelId])
     @@index([index])
+}
+
+model Category {
+    id   Int    @id @default(autoincrement())
+    name String
+
+    NovelCategory NovelCategory[]
+}
+
+model NovelCategory {
+    id         Int @id @default(autoincrement())
+    novelId    Int
+    categoryId Int
+
+    novel    Novel    @relation(fields: [novelId], references: [id], onDelete: Cascade)
+    category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+    @@unique([novelId, categoryId])
+    @@index([novelId, categoryId])
 }
 
 model Authority {

@@ -107,7 +107,6 @@ const tabs: Tab = [
 export default function UserSheet() {
   const { session: user, state } = useSession();
 
-  console.log(state);
 
   try {
     if (state === 'loading') return <></>;
