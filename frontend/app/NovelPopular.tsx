@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 function NovelPopular() {
-  const { data } = useNovels();
+  const { data } = useNovels('', [], 'chapterCount', 'desc');
 
   const novels = data ?? [];
 

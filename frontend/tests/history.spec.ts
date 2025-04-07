@@ -6,13 +6,10 @@ test.describe('History Page Tests', () => {
   test('should show login message when not logged in', async ({ page }) => {
     await page.goto('/history');
 
-    // Kiểm tra xem có hiển thị thông báo yêu cầu đăng nhập không
     await expect(page.getByText('Dăng nhập')).toBeVisible();
   });
 
   test('should not show login message when logged in', async ({ page }) => {
-    // Set token vào localStorage để giả lập đăng nhập
-
     await page.goto('/');
 
     await page.evaluate((token) => {
@@ -21,7 +18,6 @@ test.describe('History Page Tests', () => {
 
     await page.goto('/history');
 
-    // Verify login message is not visible
     await expect(page.getByText('Dăng nhập')).not.toBeVisible();
   });
 });
