@@ -19,7 +19,7 @@ export default function TokenExtractor() {
       const n = new URLSearchParams(params);
       n.delete('token');
       router.push(`?${n.toString()}`);
-      refresh();
+      setTimeout(() => refresh(), 1000);
     }
   }, [params, router, refresh]);
 

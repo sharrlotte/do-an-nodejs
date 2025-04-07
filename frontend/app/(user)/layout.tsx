@@ -1,10 +1,12 @@
-import { getSession } from '@/api/auth-server.api';
+'use client';
+
 import Header from '@/app/Header';
 import ProtectedRoute from '@/components/layout/protected-route';
+import { useSession } from '@/context/SessionContext';
 import React, { ReactNode } from 'react';
 
-export default async function Layout({ children }: { children: ReactNode }) {
-  const session = await getSession();
+export default function Layout({ children }: { children: ReactNode }) {
+  const { session } = useSession();
 
   return (
     <ProtectedRoute session={session} filter={{ role: 'USER' }}>
