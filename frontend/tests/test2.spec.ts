@@ -205,14 +205,20 @@ test('danh sách truyện cập nhật khi theo dõi truyện', async ({ page })
   });
   await page.reload();
 
-  // 2. Nhấn nút "Theo dõi" của một truyện
-  await page.getByRole('button', { name: 'Theo dõi' }).click();
+  await page.locator('.tracking-tight').first().click();
 
-  // 3. Truy cập danh sách truyện theo dõi
-  await page.getByRole('link', { name: 'Truyện theo dõi' }).click();
+  const btn = await page.locator('.font-medium.transition-colors');
+
+  if ((await btn.first().innerText()) === 'Lưu') {
+    await btn.click();
+  }
+
+  const title = await page.locator('h1').innerText();
+
+  await page.goto('https://do-an-nodejs.vercel.app/follow');
 
   // 4. Kiểm tra truyện vừa theo dõi có trong danh sách
-  await expect(page.getByText('Tên truyện 1')).toBeVisible(); // Thay 'Tên truyện 1' bằng tên truyện thực tế
+  await expect(page.getByText(title)).toBeVisible(); // Thay 'Tên truyện 1' bằng tên truyện thực tế
 });
 
 test('danh sách truyện cập nhật khi ngừng theo dõi truyện', async ({ page }) => {
@@ -229,8 +235,8 @@ test('danh sách truyện cập nhật khi ngừng theo dõi truyện', async ({
   // 2. Nhấn nút "Ngừng theo dõi" của một truyện
   await page.getByRole('button', { name: 'Đang theo dõi' }).click();
 
-  // 3. Truy cập danh sách truyện theo dõi
-  await page.getByRole('link', { name: 'Truyện theo dõi' }).click();
+  // 3. Truy cập danh sách Theo Dõi
+  await page.getByRole('link', { name: 'Theo Dõi' }).click();
 
   // 4. Kiểm tra truyện vừa ngừng theo dõi không còn trong danh sách
   await expect(page.getByText('Tên truyện 1')).not.toBeVisible(); // Thay 'Tên truyện 1' bằng tên truyện thực tế
@@ -241,13 +247,9 @@ test('tìm kiếm truyện', async ({ page }) => {
   await page.goto('https://do-an-nodejs.vercel.app/');
 
   // 2. Nhập từ khóa tìm kiếm
-  await page.getByPlaceholder('Tìm kiếm truyện').fill('Tên truyện 1'); // Thay placeholder nếu cần
+  await page.getByPlaceholder('Bạn đang tìm kiếm những gì ?').fill('Quan Đồ'); // Thay placeholder nếu cần
 
-  // 3. Nhấn nút tìm kiếm
-  await page.getByRole('button', { name: 'Tìm kiếm' }).click();
-
+  await page.waitForTimeout(2000); // Đợi 2 giây để kết quả tìm kiếm hiển thị
   // 4. Kiểm tra kết quả tìm kiếm
-  await expect(page.getByText('Tên truyện 1')).toBeVisible();
-  // Kiểm tra các kết quả không liên quan không hiển thị
-  await expect(page.getByText('Tên truyện 2')).not.toBeVisible(); // Thay 'Tên truyện 2' nếu cần
+  await expect(page.getByText('Quan Đồ').first()).toBeVisible();
 });

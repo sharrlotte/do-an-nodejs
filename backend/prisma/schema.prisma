@@ -111,6 +111,8 @@ model Category {
     name String
 
     NovelCategory NovelCategory[]
+
+    @@unique([name])
 }
 
 model NovelCategory {

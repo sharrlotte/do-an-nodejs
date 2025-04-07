@@ -26,15 +26,14 @@ test('TC020 - Truy cập chương truyện khi bấm vào link "Chương"', asyn
   // Step 3: Kiểm tra có Button "Danh sách chương"
   // Step 4: Kiểm tra có link "Chapter trước", "Chapter kế"
   await page.goto(BASE_URL);
-  await page.locator('.tracking-tight').first().click();
+  await page.locator('.relative.w-full.flex-shrink-0').first().click();
   await page.waitForURL('**/novels/**');
   await page.getByRole('tab').first().click();
-  await page.locator('a[href*="/chapter"]').first().click();
-
+  await page.locator('a[href*="/novels"]').first().click();
   // Expected Result: Không hiển thị các thành phần kiểm tra khi click vào link "Render thành công các thành phần kiểm tra"
-  await expect(page.locator('div')).toContainText('Nội dung');
+  await expect(page.locator('#content')).toBeVisible();
   // Check for navigation buttons
-  await expect(page.getByRole('link', { name: /Chapter (trước|kế)/i })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Chapter (trước|kế)/i }).first()).toBeVisible();
 });
 
 // TC021 - Chuyển chapter trước khi click vào link "Chapter trước" để chuyển tới chương phía trước

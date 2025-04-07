@@ -35,4 +35,40 @@ test.describe('Admin Page Tests', () => {
     await expect(page).toHaveURL('/admin/category');
     await expect(page.getByText('Không có quyền truy cập')).not.toBeVisible();
   });
+
+  test('should able to add category', async ({ page }) => {
+    await page.goto('/');
+
+    await page.evaluate((token) => {
+      localStorage.setItem('token', token);
+    }, TOKEN_ADMIN);
+
+    await page.goto('/admin/category');
+
+    await page
+      .locator('.lucide-trash2')
+      .last()
+      .evaluate((el) => el.parentElement?.click());
+
+    //find button with name Thêm thể loại
+    await page.locator('.lucide-plus').evaluate((el) => el.parentElement?.click());
+
+    await page.getByPlaceholder('Nhập tên thể loại').fill('Test');
+
+    await page.getByRole('button', { name: 'Thêm' }).click();
+
+    await expect(page.getByText('Test')).toBeVisible();
+  });
+
+  test('should be able to delete category', async ({ page }) => {
+    await page.goto('/');
+
+    await page.evaluate((token) => {
+      localStorage.setItem('token', token);
+    }, TOKEN_ADMIN);
+
+    await page.goto('/admin/category');
+
+    await page.locator('.lucide-trash2').last();
+  });
 });

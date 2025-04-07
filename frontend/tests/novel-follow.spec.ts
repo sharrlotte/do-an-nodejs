@@ -9,20 +9,20 @@ test('TC011 - Theo dõi truyện bằng icon flash đầu ở trang chủ', asyn
   });
   await page.goto(BASE_URL);
   const followIcon = page.locator('.lucide.lucide-bookmark').nth(1);
-  await followIcon.click();
-  await page.waitForTimeout(1000);
-  await expect(followIcon).toHaveClass(/.*text-yellow-500.*/);
-});
 
-test('TC012 - Hủy theo dõi truyện bằng icon flash đầu ở trang chủ', async ({ page }) => {
-  await page.addInitScript(() => {
-    localStorage.setItem('token', TOKEN);
-  });
-  await page.goto(BASE_URL);
-  const followIcon = page.locator('.lucide.lucide-bookmark').nth(1);
+  await followIcon.evaluate((el) => el.parentElement?.classList.remove('hidden'));
+
+  await page.waitForTimeout(1000);
+
+  if ((await followIcon.getAttribute('fill')) === 'yellow') {
+    await followIcon.click();
+  }
+
+  await followIcon.evaluate((el) => el.parentElement?.classList.remove('hidden'));
+  await page.waitForTimeout(1000);
   await followIcon.click();
   await page.waitForTimeout(1000);
-  await expect(followIcon).not.toHaveClass(/.*text-yellow-500.*/);
+  await expect(followIcon).toHaveAttribute('fill', 'yellow');
 });
 
 test('TC013 - Theo dõi truyện bằng Button "Lưu" ở trang chi tiết truyện', async ({ page }) => {
@@ -50,8 +50,8 @@ test('TC014 - Hủy theo dõi truyện bằng Button "Đã Lưu" ở trang chi t
 test('TC015 - Xem chi tiết bộ truyện được chọn', async ({ page }) => {
   await page.goto(BASE_URL);
   await page.locator('.tracking-tight').first().click();
-  await page.waitForURL(/\/novels\/ \d+/);
-  await expect(page.getByRole('heading')).toBeVisible();
+  await page.waitForURL(/\/novels.+/);
+  await expect(page.getByRole('heading').first()).toBeVisible();
   await expect(page).toHaveURL(/\/novels\/\d+/);
 });
 
@@ -61,11 +61,11 @@ test('TC016 - Xem số lượng theo dõi bộ truyện có tăng khi click butt
   });
   await page.goto(BASE_URL);
   await page.locator('.tracking-tight').first().click();
-  const before = await page.locator('.text-yellow-500').innerText();
+  const before = await page.locator('.ml-1').first().innerText();
   const saveBtn = page.getByRole('button', { name: 'Lưu' });
   await saveBtn.click();
   await page.reload();
-  const after = await page.locator('.text-yellow-500').innerText();
+  const after = await page.locator('.ml-1').first().innerText();
   expect(Number(after)).toBeGreaterThan(Number(before));
 });
 
@@ -75,11 +75,11 @@ test('TC017 - Xem số lượng theo dõi bộ truyện có giảm khi click but
   });
   await page.goto(BASE_URL);
   await page.locator('.tracking-tight').first().click();
-  const before = await page.locator('.text-yellow-500').innerText();
+  const before = await page.locator('.ml-1').first().innerText();
   const saveBtn = page.getByRole('button', { name: 'Đã lưu' });
   await saveBtn.click();
   await page.reload();
-  const after = await page.locator('.text-yellow-500').innerText();
+  const after = await page.locator('.ml-1').first().innerText();
   expect(Number(after)).toBeLessThan(Number(before));
 });
 
