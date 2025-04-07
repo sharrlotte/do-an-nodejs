@@ -1,5 +1,6 @@
 'use client';
 
+import { useSession } from '@/context/SessionContext';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
@@ -7,6 +8,8 @@ import { useEffect } from 'react';
 export default function TokenExtractor() {
   const params = useSearchParams();
   const router = useRouter();
+
+  const { refresh } = useSession();
 
   useEffect(() => {
     const token = params.get('token');
@@ -16,8 +19,9 @@ export default function TokenExtractor() {
       const n = new URLSearchParams(params);
       n.delete('token');
       router.push(`?${n.toString()}`);
+      refresh();
     }
-  }, [params, router]);
+  }, [params, router, refresh]);
 
   return <></>;
 }

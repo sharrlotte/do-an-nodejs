@@ -1,15 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useSession } from '@/context/SessionContext';
 
 export default function LogoutButton() {
-  const router = useRouter();
+  const { refresh } = useSession();
   return (
     <button
       className="text-nowrap flex gap-1"
       onClick={() => {
         window.localStorage.removeItem('token');
-        router.refresh();
+        refresh();
       }}
     >
       Đăng xuất
