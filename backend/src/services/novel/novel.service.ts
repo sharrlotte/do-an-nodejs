@@ -1,5 +1,5 @@
-import { NovelCategory } from './../../../node_modules/.pnpm/@prisma+client@5.13.0_prisma@5.22.0/node_modules/.prisma/client/index.d';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { NovelCategory } from '@prisma/client';
 import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
 import { PrismaService } from 'src/services/prisma/prisma.service';
@@ -189,6 +189,64 @@ export class NovelService {
       }),
     ]);
     return novelLibrary;
+  }
+
+  async addCategory(novelId: number, categoryId: number) {
+    // Check if novel exists
+    const novel = await this.prismaService.novel.findUnique({
+      where: { id: novelId },
+    });
+
+    if (!novel) {
+      throw new NotFoundException(`Novel with ID ${novelId} not found`);
+    }
+
+    // Check if category exists
+    const category = await this.prismaService.category.findUnique({
+      where: { id: categoryId },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${categoryId} not found`);
+    }
+
+    // Add category to novel
+    return this.prismaService.novelCategory.create({
+      data: {
+        novelId,
+        categoryId,
+      },
+    });
+  }
+
+  async removeCategory(novelId: number, categoryId: number) {
+    // Check if novel exists
+    const novel = await this.prismaService.novel.findUnique({
+      where: { id: novelId },
+    });
+
+    if (!novel) {
+      throw new NotFoundException(`Novel with ID ${novelId} not found`);
+    }
+
+    // Check if category exists
+    const category = await this.prismaService.category.findUnique({
+      where: { id: categoryId },
+    });
+
+    if (!category) {
+      throw new NotFoundException(`Category with ID ${categoryId} not found`);
+    }
+
+    // Remove category from novel
+    return this.prismaService.novelCategory.delete({
+      where: {
+        novelId_categoryId: {
+          novelId,
+          categoryId,
+        },
+      },
+    });
   }
 
   async isFollow(userId: number, novelId: number[]) {

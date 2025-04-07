@@ -3,7 +3,6 @@ import { NovelDetail } from '@/schema/novel.schema';
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -11,6 +10,7 @@ import { Separator } from '@/components/ui/separator';
 import { BookOpen, BookmarkPlus, Share2, Database, ChevronLeftIcon } from 'lucide-react';
 import CommentSection from '@/components/common/comment-section';
 import FollowButton from '@/app/(everyone)/novels/[id]/follow-button';
+import { CategoryList } from '@/app/(everyone)/novels/[id]/chapters/category-list';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -129,17 +129,7 @@ function NovelDetailPanel({ novel }: { novel: NovelDetail }) {
           </div>
 
           {/* Categories */}
-          <div className="flex flex-wrap gap-2">
-            <Badge className="bg-amber-600 hover:bg-amber-700">SUGGESTIVE</Badge>
-            {novel.categories?.map((category, index) => (
-              <Badge key={index} variant="outline" className="text-white border-gray-600">
-                {category}
-              </Badge>
-            ))}
-            <Badge variant="outline" className="text-white border-gray-600">
-              MORE
-            </Badge>
-          </div>
+          <CategoryList novel={novel} />
 
           {/* Publication Info */}
           <div className="flex items-center gap-2">

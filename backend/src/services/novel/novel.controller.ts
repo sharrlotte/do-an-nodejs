@@ -4,10 +4,19 @@ import { CreateNovelDto } from './dto/create-novel.dto';
 import { UpdateNovelDto } from './dto/update-novel.dto';
 import { CurrentUser } from 'src/shared/decorator/current-user.decorator';
 import { AuthGuard } from 'src/services/auth/auth.guard';
+import { RolesGuard } from 'src/shared/guard/role.guard';
+import { Roles } from 'src/shared/decorator/role.decorator';
 
 @Controller('novels')
 export class NovelController {
   constructor(private readonly novelService: NovelService) {}
+
+  @Post(':id/categories')
+  @UseGuards(RolesGuard)
+  @Roles(['ADMIN'])
+  addCategory(@Param('id', ParseIntPipe) novelId: number, @Body('categoryId', ParseIntPipe) categoryId: number) {
+    return this.novelService.addCategory(novelId, categoryId);
+  }
 
   @Post('isFollow')
   @UseGuards(AuthGuard)
@@ -66,5 +75,12 @@ export class NovelController {
   @UseGuards(AuthGuard)
   read(@CurrentUser('id') userId: number, @Param('id', ParseIntPipe) novelId: number, @Param('chapterId', ParseIntPipe) chapterId: number) {
     return this.novelService.read(userId, novelId, chapterId);
+  }
+
+  @Delete(':id/categories/:categoryId')
+  @UseGuards(RolesGuard)
+  @Roles(['ADMIN'])
+  removeCategory(@Param('id', ParseIntPipe) novelId: number, @Param('categoryId', ParseIntPipe) categoryId: number) {
+    return this.novelService.removeCategory(novelId, categoryId);
   }
 }
