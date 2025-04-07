@@ -64,7 +64,7 @@ function NovelCard({ novel }: { novel: NovelDetail }) {
           <h2 className="font-medium">{novel.title}</h2>
           <div className="flex flex-col p-0">
             <div className="text-sm text-muted-foreground line-clamp-3 text-ellipsis">{novel.description}</div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground py-1 space-x-2">
               Thể loại:
               {novel.categories.map((c) => (
                 <Badge key={c}>{c}</Badge>

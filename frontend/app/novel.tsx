@@ -61,7 +61,7 @@ export function NovelCard({ novel }: { novel: Novel }) {
           <CardTitle className="font-medium text-lg">{novel.title}</CardTitle>
           <CardContent className="flex flex-col p-0">
             <div className="text-xs text-muted-foreground line-clamp-3 text-ellipsis">{novel.description}</div>
-            <div className="text-sm text-muted-foreground">
+            <div className="text-sm text-muted-foreground py-1 space-x-2">
               Thể loại:
               {novel.categories.map((c) => (
                 <Badge key={c}>{c}</Badge>
