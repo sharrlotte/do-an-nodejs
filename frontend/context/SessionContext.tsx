@@ -62,13 +62,24 @@ export function SessionProvider({ children }: { children: ReactNode }) {
               }))
             : setSession((prev) => ({ ...prev, state: 'unauthenticated', session: null })),
         )
-        .catch((error) => console.error(error)),
+        .catch((error) => {
+          setSession({
+            state: 'unauthenticated',
+            session: null,
+          });
+          console.error(error);
+        }),
     [],
   );
 
   useEffect(() => {
     if (token) {
       getSession();
+    } else {
+      setSession({
+        state: 'unauthenticated',
+        session: null,
+      });
     }
   }, [getSession, token]);
 
