@@ -1,11 +1,15 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
+
 export default function LogoutButton() {
+  const router = useRouter();
   return (
     <button
-      className="p-2 text-nowrap"
+      className="text-nowrap flex gap-1"
       onClick={() => {
         window.localStorage.removeItem('token');
+        router.refresh();
       }}
     >
       Đăng xuất
