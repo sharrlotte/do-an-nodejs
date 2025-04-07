@@ -8,9 +8,9 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 
 import { ArrowLeftEndOnRectangleIcon, BookOpenIcon, Cog6ToothIcon, HeartIcon, UserIcon } from '@heroicons/react/24/outline';
-import env from '@/constant/env';
 import { Filter } from '@/lib/utils';
 import { useSession } from '@/context/SessionContext';
+import LogoutButton from '@/components/common/LogoutButton';
 
 type Tab = {
   icon: ReactNode;
@@ -99,11 +99,7 @@ const tabs: Tab = [
   [
     {
       icon: <ArrowLeftEndOnRectangleIcon className="w-5 h-5" />,
-      action: (
-        <Link className="w-full" href={`${env.url.backend_url}/auth/logout`}>
-          Đăng xuất
-        </Link>
-      ),
+      action: <LogoutButton />,
     },
   ],
 ];
