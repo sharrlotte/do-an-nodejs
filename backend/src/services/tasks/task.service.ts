@@ -21,8 +21,8 @@ export class TasksService implements OnModuleInit {
 
   @Cron(CronExpression.EVERY_HOUR)
   private async handleCron() {
-    await this.crawBook();
-    await this.crawlChapters();
+    // await this.crawBook();
+    // await this.crawlChapters();
   }
 
   async onModuleInit() {
