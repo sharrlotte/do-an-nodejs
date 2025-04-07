@@ -12,7 +12,7 @@ export default function Page() {
   const orderBy = params.get('orderBy') ?? 'createdAt';
   const order = params.get('order') ?? 'desc';
 
-  const { data, isLoading } = useNovels(orderBy as any, order as any);
+  const { data, isLoading } = useNovels('', [], orderBy as any, order as any);
 
   return (
     <div className="flex flex-col gap-2 p-4">

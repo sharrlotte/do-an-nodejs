@@ -13,7 +13,7 @@ import { BookmarkIcon } from 'lucide-react';
 import Loading from '@/app/loading';
 
 export function NovelList({ text, orderBy, order }: { text: string; orderBy?: 'chapterCount' | 'createdAt' | 'followCount'; order?: 'asc' | 'desc' }) {
-  const { data: novels } = useNovels(orderBy, order);
+  const { data: novels } = useNovels('', [], orderBy, order);
 
   if (!novels) return <></>;
 
