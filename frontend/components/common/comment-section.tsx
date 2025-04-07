@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { useSession } from '@/context/SessionContext';
 import useComments from '@/hook/use-comments';
 import useCreateComment from '@/hook/use-create-coimment';
 import useUser from '@/hook/use-user';
@@ -18,6 +19,7 @@ type CommentSectionProps = {
 export default function CommentSection({ novelId, chapterId }: CommentSectionProps) {
   const [content, setContent] = useState<string>('');
   const { mutate, isPending } = useCreateComment(novelId, chapterId);
+  const { state } = useSession();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,9 +32,13 @@ export default function CommentSection({ novelId, chapterId }: CommentSectionPro
       <div>Bình luận</div>
       <form className="flex gap-1" onSubmit={handleSubmit}>
         <Textarea value={content} onChange={(event) => setContent(event.target.value)} />
-        <Button type="submit" disabled={isPending}>
-          <SendIcon size={20} />
-        </Button>
+        {state === 'unauthenticated' ? (
+          <span>Bạn cần đăng nhập để bình luận</span>
+        ) : (
+          <Button type="submit" disabled={isPending}>
+            <SendIcon size={20} />
+          </Button>
+        )}
       </form>
       <CommentList novelId={novelId} chapterId={chapterId}></CommentList>
     </div>
