@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { ChartBarSquareIcon, FlagIcon, Squares2X2Icon, TagIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import React, { ReactNode } from 'react';
-import env from '@/constant/env';
 import Link from 'next/link';
 import UserSheet from '../UserSheet';
 import { Input } from '@/components/ui/input';
