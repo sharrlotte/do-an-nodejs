@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useLocalStorage } from 'usehooks-ts';
 
 export default function TokenExtractor() {
-  const [token, setToken] = useLocalStorage('token', '', {
+  const [token] = useLocalStorage('token', '', {
     deserializer: (value) => value,
   });
 
@@ -21,13 +21,13 @@ export default function TokenExtractor() {
     const token = params.get('token');
 
     if (token) {
-      setToken(token);
+      localStorage.setItem('token', token);
       refresh();
       const n = new URLSearchParams(params);
       n.delete('token');
       router.push(`?${n.toString()}`);
     }
-  }, [params, refresh, router, setToken]);
+  }, [params, refresh, router]);
 
   useEffect(() => {
     refresh();
