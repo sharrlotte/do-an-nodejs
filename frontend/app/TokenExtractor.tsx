@@ -22,6 +22,7 @@ export default function TokenExtractor() {
 
     if (token) {
       setToken(token);
+      refresh();
       const n = new URLSearchParams(params);
       n.delete('token');
       router.push(`?${n.toString()}`);
