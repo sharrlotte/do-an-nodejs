@@ -27,12 +27,10 @@ export default function TokenExtractor() {
       n.delete('token');
       router.push(`?${n.toString()}`);
     }
-  }, [params, router, setToken]);
+  }, [params, refresh, router, setToken]);
 
   useEffect(() => {
-    if (token) {
-      refresh();
-    }
+    refresh();
   }, [refresh, token]);
 
   return <></>;
